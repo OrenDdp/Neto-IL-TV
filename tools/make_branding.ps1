@@ -1,5 +1,6 @@
-# Draws the Neto-IL-TV logo and writes every image made from it: app icons and TV banner (Android), opening screen,
-# the logo in the skin's top corner, the add-ons' icons, and the LG icons.
+﻿# Writes every image made from the Neto-IL-TV icon (branding\tv-icon\tv-icon.png, drawn by branding\tv-icon\draw.ps1
+# with Fredoka Bold): app icons and TV banner (Android), opening screens on a yellow-gold-orange gradient, the logo in
+# the skin's top corner, the add-ons' icons, and the LG icons.
 #     powershell -NoProfile -ExecutionPolicy Bypass -File tools\make_branding.ps1
 Add-Type -AssemblyName System.Drawing
 $root = Split-Path -Parent $PSScriptRoot
@@ -27,6 +28,16 @@ function New-Logo([int]$size) {
     $g.Dispose(); return $b
 }
 
+function Fill-Gold($g, [int]$w, [int]$h) {
+    # Yellow, gold and orange, as on the icon's screen.
+    $brush = New-Object Drawing.Drawing2D.LinearGradientBrush (New-Object Drawing.Rectangle 0, 0, $w, $h), ([Drawing.Color]::Gold), ([Drawing.Color]::Orange), 45
+    $blend = New-Object Drawing.Drawing2D.ColorBlend 3
+    $blend.Colors = @([Drawing.Color]::FromArgb(255, 255, 214, 10), [Drawing.Color]::FromArgb(255, 240, 170, 20), [Drawing.Color]::FromArgb(255, 255, 120, 0))
+    $blend.Positions = @([single]0, [single]0.5, [single]1)
+    $brush.InterpolationColors = $blend
+    $g.FillRectangle($brush, 0, 0, $w, $h)
+}
+
 function Save-Png($bmp, [string]$path) { $bmp.Save($path, [Drawing.Imaging.ImageFormat]::Png) }
 
 function Save-Scaled($src, [int]$w, [int]$h, [string]$path) {
@@ -35,9 +46,11 @@ function Save-Scaled($src, [int]$w, [int]$h, [string]$path) {
 }
 
 function Save-Screen($logo, [int]$w, [int]$h, [int]$logoSize, [string]$path, [string]$format) {
-    # Black screen with the logo in the middle (Android opening screen, Kodi splash).
+    # Soft grey screen with the logo in the middle (Android opening screen, Kodi splash): gold is too bright full screen.
     $b = New-Object Drawing.Bitmap $w, $h; $g = [Drawing.Graphics]::FromImage($b)
-    $g.InterpolationMode = 'HighQualityBicubic'; $g.Clear([Drawing.Color]::Black)
+    $g.InterpolationMode = 'HighQualityBicubic'
+    $g.FillRectangle((New-Object Drawing.Drawing2D.LinearGradientBrush (New-Object Drawing.Rectangle 0, 0, $w, $h),
+        ([Drawing.Color]::FromArgb(255, 84, 86, 92)), ([Drawing.Color]::FromArgb(255, 44, 46, 52)), 90), 0, 0, $w, $h)
     $g.DrawImage($logo, [int](($w - $logoSize) / 2), [int](($h - $logoSize) / 2), $logoSize, $logoSize); $g.Dispose()
     if ($format -eq 'jpg') {
         $enc = [Drawing.Imaging.ImageCodecInfo]::GetImageEncoders() | Where-Object MimeType -eq 'image/jpeg'
@@ -48,22 +61,26 @@ function Save-Screen($logo, [int]$w, [int]$h, [int]$logoSize, [string]$path, [st
     $b.Dispose()
 }
 
-$logo = New-Logo 1024
+$logo = [Drawing.Image]::FromFile((Join-Path $root 'branding\tv-icon\tv-icon.png'))
 New-Item -ItemType Directory -Force (Join-Path $root 'branding') | Out-Null
 Save-Png $logo (Join-Path $root 'branding\logo.png')
 
-# Android app icons (sizes as shipped) and the TV banner
+# App tiles: the TV as large as fits, on the yellow-gold-orange gradient, no text (Android icons and banner, LG icons)
+$tv = New-Object Drawing.Rectangle 40, 150, 944, 700   # the TV itself inside the 1024 icon
+function Save-Tile([int]$w, [int]$h, [int]$pad, [string]$path) {
+    $b = New-Object Drawing.Bitmap $w, $h; $g = [Drawing.Graphics]::FromImage($b)
+    $g.InterpolationMode = 'HighQualityBicubic'; $g.SmoothingMode = 'AntiAlias'
+    Fill-Gold $g $w $h
+    $s = [Math]::Min(($w - 2 * $pad) / $tv.Width, ($h - 2 * $pad) / $tv.Height)
+    $dw = $tv.Width * $s; $dh = $tv.Height * $s
+    $g.DrawImage($logo, (New-Object Drawing.RectangleF (($w - $dw) / 2), (($h - $dh) / 2), $dw, $dh), $tv, 'Pixel')
+    $g.Dispose(); Save-Png $b $path; $b.Dispose()
+}
 Get-ChildItem (Join-Path $work 'res') -Recurse -Filter ic_launcher.png | ForEach-Object {
     $old = [Drawing.Image]::FromFile($_.FullName); $w = $old.Width; $h = $old.Height; $old.Dispose()
-    Save-Scaled $logo $w $h $_.FullName
+    Save-Tile $w $h ([int]($w * 0.05)) $_.FullName
 }
-$banner = New-Object Drawing.Bitmap 320, 180; $g = [Drawing.Graphics]::FromImage($banner)
-$g.SmoothingMode = 'AntiAlias'; $g.InterpolationMode = 'HighQualityBicubic'; $g.TextRenderingHint = 'AntiAliasGridFit'
-$g.Clear([Drawing.Color]::FromArgb(255, 8, 24, 72)); $g.DrawImage($logo, 20, 20, 140, 140)
-$fmt = New-Object Drawing.StringFormat; $fmt.Alignment = 'Center'; $fmt.LineAlignment = 'Center'
-$g.DrawString('Neto-IL-TV', (New-Object Drawing.Font('Segoe UI', 26, [Drawing.FontStyle]::Bold, [Drawing.GraphicsUnit]::Pixel)),
-    [Drawing.Brushes]::White, (New-Object Drawing.RectangleF 165, 0, 150, 180), $fmt)
-$g.Dispose(); Save-Png $banner (Join-Path $work 'res\drawable-xhdpi\banner.png'); $banner.Dispose()
+Save-Tile 320 180 8 (Join-Path $work 'res\drawable-xhdpi\banner.png')
 
 # Opening screens
 foreach ($p in 'res\drawable\applaunch_screen.png', 'res\drawable-xxxhdpi\applaunch_screen.png', 'assets\media\applaunch_screen.png') {
@@ -78,7 +95,7 @@ Save-Scaled $logo 256 256 (Join-Path $addons 'service.netotv\icon.png')
 Save-Scaled $logo 256 256 (Join-Path $addons 'plugin.video.netotv\icon.png')
 
 # LG icons
-Save-Scaled $logo 80 80 (Join-Path $root 'webos\assets\icon.png')
-Save-Scaled $logo 130 130 (Join-Path $root 'webos\assets\largeIcon.png')
+Save-Tile 80 80 4 (Join-Path $root 'webos\assets\icon.png')
+Save-Tile 130 130 6 (Join-Path $root 'webos\assets\largeIcon.png')
 $logo.Dispose()
 Write-Output 'branding written'

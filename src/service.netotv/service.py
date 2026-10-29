@@ -172,8 +172,19 @@ def setup_kodi():
     log('set up this Kodi for Neto-IL-TV')
 
 
+def seed_favourites():
+    """Personal builds only: start Idan+'s favourites from resources/favorites.json (not published) once, if empty."""
+    src = os.path.join(os.path.dirname(PAYLOAD), 'resources', 'favorites.json')
+    dst = xbmcvfs.translatePath('special://profile/addon_data/%s/favorites.json' % IDANPLUS)
+    if os.path.exists(src) and not os.path.exists(dst):
+        os.makedirs(os.path.dirname(dst), exist_ok=True)
+        shutil.copy(src, dst)
+        log('added the personal Idan+ favourites')
+
+
 def main():
     monitor = xbmc.Monitor()
+    seed_favourites()
     setup_kodi()
     register_tabs()
     copied = install(monitor)

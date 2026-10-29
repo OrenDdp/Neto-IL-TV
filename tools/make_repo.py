@@ -16,6 +16,7 @@ DOCS = OUT / 'docs'
 RAW = 'https://raw.githubusercontent.com/OrenDdp/Neto-IL-TV/main/docs/repo'
 OURS = ('service.netotv', 'plugin.video.netotv', 'skin.fentastic', 'script.fentastic.helper')
 # The Android player library is only for our APK; Idan+ itself is never shipped (it comes from Fishenzon).
+# service.netotv/resources/favorites.json (the owner's Idan+ favourites) is published on purpose: the owner asked for it.
 SKIP = ('service.netotv/payload/inputstream.adaptive/', '__pycache__/')
 
 REPO_ID, REPO_VERSION = 'repository.netotv', '1.0.0'

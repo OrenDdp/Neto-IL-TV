@@ -1,7 +1,8 @@
 # Builds Neto-IL-TV for LG webOS: the official Kodi 21.0 webOS package, renamed to org.xbmc.neto and carrying the same
 # add-ons, tabs and settings as the Android build (work/assets). Edits the archive in place with tarfile, because the
 # package holds Linux symlinks that a Windows checkout cannot extract.
-#     python -I webos/build_ipk.py   ->   webos/dist/org.xbmc.neto_<version>_arm.ipk
+#     python -I webos/build_ipk.py          ->   webos/dist/org.xbmc.neto_<version>_arm.ipk   (side-menu tabs)
+#     python -I webos/build_ipk.py dock     ->   webos/dist/org.xbmc.net2_<version>_arm.ipk   (one page: dock + grid)
 import gzip
 import io
 import json
@@ -14,7 +15,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 ADDONS = ROOT.parent / 'work/assets/addons'          # shared with the Android build
 SOURCE = ROOT / 'downloads/kodi-webos-21.0.ipk'      # https://mirrors.kodi.tv/releases/webos/
-OLD, NEW = 'org.xbmc.kodi', 'org.xbmc.neto'          # same length: the id is patched inside the binary too
+DOCK = 'dock' in sys.argv[1:]                         # the one-page variant, installable next to the tabs one
+OLD, NEW = 'org.xbmc.kodi', ('org.xbmc.net2' if DOCK else 'org.xbmc.neto')  # same length: patched in the binary too
+TITLE = 'Neto-IL-TV Dock' if DOCK else 'Neto-IL-TV'
 # Follows service.netotv's version, so both builds move together: 1.0.16 -> 21.0.16
 _service = re.search(r'<addon\b[^>]*\sversion="([^"]+)"', ADDONS.joinpath('service.netotv/addon.xml').read_text(encoding='utf-8'))
 VERSION = '21.0.%s' % _service.group(1).split('.')[-1]
@@ -63,7 +66,7 @@ def manifest(xml):
 
 def appinfo(text):
     info = json.loads(text)
-    info.update(id=NEW, title='Neto-IL-TV', version=VERSION, vendor='local')
+    info.update(id=NEW, title=TITLE, version=VERSION, vendor='local')
     return json.dumps(info, ensure_ascii=False, indent=2)
 
 
@@ -71,6 +74,119 @@ def binary(data):
     old, new = (OLD + '\0').encode(), (NEW + '\0').encode()
     assert data.count(old) == 1, 'expected the app id once in kodi-webos'
     return data.replace(old, new)
+
+
+def idanplus(name, mode):
+    from urllib.parse import quote_plus
+    return ('plugin://plugin.video.idanplus/?name=%s&amp;url=&amp;mode=%d&amp;iconimage=%s&amp;module=&amp;moredata='
+            % (quote_plus('[B]%s[/B]' % name), mode, quote_plus('special://home/addons/plugin.video.idanplus/icon.png')))
+
+
+# The dock variant's categories, left to right (same lists as the tabs in tools/make_tabs.py).
+DOCK_ITEMS = [('ערוצים חיים', 'plugin://plugin.video.netotv/?row=live'), ('VOD', idanplus('VOD', 2)),
+              ('המשך צפייה', idanplus('המשך צפייה', 27)), ('מועדפים', idanplus('מועדפי עידן פלוס', 10)),
+              ('ערוצי גיבוי', 'plugin://plugin.video.netotv/?row=backup')]
+
+
+def dock_home(xml):
+    """The one-page home: no side menu; a dock of the categories right of the logo and icons, and the chosen one as a
+    full-width grid below. Built from the tabs Home.xml so both variants keep every other change."""
+    xml = xml.replace('<defaultcontrol>9000</defaultcontrol>', '<defaultcontrol>23040</defaultcontrol>', 1)
+    xml = xml.replace('<control type="fixedlist" id="9000">', '<control type="fixedlist" id="9000">\n\t\t\t\t\t\t<visible>false</visible>', 1)
+    xml = xml.replace('<ondown>SetFocus(9000,0,absolute)</ondown>', '<ondown>23040</ondown>', 1)
+    i = xml.index('<control type="grouplist" id="700">')
+    xml = xml[:i] + xml[i:].replace('<onright>2000</onright>', '<onright>23040</onright>', 1)
+    items = ''.join('\t\t\t\t\t\t\t<item>\n\t\t\t\t\t\t\t\t<label>%s</label>\n\t\t\t\t\t\t\t\t<property name="path">%s</property>\n'
+                    '\t\t\t\t\t\t\t\t<onclick>SetFocus(23050)</onclick>\n\t\t\t\t\t\t\t</item>\n' % it for it in DOCK_ITEMS)
+    block = """				<!-- Neto-IL-TV Dock: the categories as a dock (Left/Right), the chosen one as a grid below (Down) -->
+				<control type="group" id="23000">
+					<visible>String.IsEqual(Container(9000).ListItem.Property(id),custom1)</visible>
+					<defaultcontrol always="true">23040</defaultcontrol>
+					<control type="list" id="23040">
+						<left>0</left>
+						<top>90</top>
+						<width>1400</width>
+						<height>80</height>
+						<orientation>horizontal</orientation>
+						<scrolltime tween="cubic" easing="out">300</scrolltime>
+						<onleft>700</onleft>
+						<onup>700</onup>
+						<ondown>23050</ondown>
+						<onback>Minimize</onback>
+						<itemlayout width="275" height="80">
+							<control type="label">
+								<width>255</width>
+								<height>80</height>
+								<align>center</align>
+								<aligny>center</aligny>
+								<font>font32</font>
+								<textcolor>unfocused_text</textcolor>
+								<label>$INFO[ListItem.Label]</label>
+							</control>
+						</itemlayout>
+						<focusedlayout width="275" height="80">
+							<control type="image">
+								<width>255</width>
+								<height>80</height>
+								<texture colordiffuse="button_focus">masks/categorywidget.png</texture>
+								<visible>Control.HasFocus(23040)</visible>
+							</control>
+							<control type="label">
+								<width>255</width>
+								<height>80</height>
+								<align>center</align>
+								<aligny>center</aligny>
+								<font>font32</font>
+								<textcolor>white</textcolor>
+								<label>[B]$INFO[ListItem.Label][/B]</label>
+							</control>
+						</focusedlayout>
+						<content>
+%s						</content>
+					</control>
+					<include content="BusyListSpinner">
+						<param name="list_id" value="23050"/>
+						<param name="posy" value="330"/>
+					</include>
+					<control type="panel" id="23050">
+						<left>-417</left>
+						<top>230</top>
+						<width>1830</width>
+						<height>840</height>
+						<orientation>vertical</orientation>
+						<scrolltime tween="cubic" easing="out">500</scrolltime>
+						<onup>23040</onup>
+						<onleft>23050</onleft>
+						<onback>SetFocus(23050,0,absolute)</onback>
+						<onback>23040</onback>
+						<itemlayout width="448" height="290">
+							<control type="group">
+								<left>68</left>
+								<top>15</top>
+								<include content="BigWideInfoWallMovieLayout">
+									<param name="focused" value="false" />
+									<param name="list_id" value="23050" />
+								</include>
+							</control>
+						</itemlayout>
+						<focusedlayout width="448" height="290">
+							<control type="group">
+								<depth>DepthContentPopout</depth>
+								<left>68</left>
+								<top>15</top>
+								<include content="BigWideInfoWallMovieLayout">
+									<param name="focused" value="true" />
+									<param name="list_id" value="23050" />
+								</include>
+							</control>
+						</focusedlayout>
+						<content target="videos">$INFO[Container(23040).ListItem.Property(path)]</content>
+					</control>
+				</control>
+""" % items
+    s0 = xml.index('\t\t\t\t<!-- CUSTOM 1 -->')
+    s1 = xml.index('\t\t\t\t<!-- CUSTOM 2 -->')
+    return xml[:s0] + block + xml[s1:]
 
 
 REPLACE = {  # path inside the app -> function(old bytes) -> new bytes
@@ -140,7 +256,10 @@ def data_tar():
                     add_dir(out, APP + 'addons/' + rel, seen)
                 else:
                     add_dir(out, APP + 'addons/' + p.parent.relative_to(ADDONS).as_posix(), seen)
-                    add_file(out, APP + 'addons/' + rel, p.read_bytes())
+                    data = p.read_bytes()
+                    if DOCK and rel == 'skin.fentastic/xml/Home.xml':
+                        data = dock_home(data.decode('utf-8')).encode('utf-8')
+                    add_file(out, APP + 'addons/' + rel, data)
     return members, buf.getvalue()
 
 
