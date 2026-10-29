@@ -18,7 +18,9 @@ Kodi עם התוסף עידן+ בלבד. בראש העמוד Dock של הקטג�
 ## התקנה
 
 ### אנדרואיד TV (Mi Box וכו')
-מורידים את קובץ ה־APK מ־[Releases](../../releases/latest) ומתקינים. מותקן לצד Kodi רגיל ולא נוגע בו.
+באפליקציית **Downloader** מקלידים את הקוד **2738779**. הוא מוריד תמיד את הגרסה האחרונה.
+
+או מורידים ישירות: [Neto-IL-TV-android.apk](https://github.com/OrenDdp/Neto-IL-TV/releases/latest/download/Neto-IL-TV-android.apk). מותקן לצד Kodi רגיל ולא נוגע בו.
 
 ### LG webOS
 מורידים אחד מקובצי ה־IPK (Dock או לשוניות) מ־[Releases](../../releases/latest) ומתקינים במצב מפתחים (webOS Dev Manager, או `ares-install`).
