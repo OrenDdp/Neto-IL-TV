@@ -182,6 +182,33 @@ def seed_favourites():
         log('added the personal Idan+ favourites')
 
 
+def fix_episode_order(path):
+    """Idan+ saves each season's episodes in the site's order, and mako lists them newest first, so its "next episode"
+    points backwards. Put every season whose episodes all carry distinct numbers in episode-number order; seasons
+    already in that order (the other channels) are left exactly as they are."""
+    try:
+        with open(path, encoding='utf-8') as f:
+            data = json.load(f)
+    except (OSError, ValueError):
+        return
+    changed = False
+    for season in data.get('seasons', {}).values():
+        order, eps = season.get('order', []), season.get('eps', {})
+        numbers = [eps.get(k, {}).get('number') for k in order]
+        if len(order) < 2 or not all(isinstance(n, int) for n in numbers) or len(set(numbers)) != len(numbers):
+            continue
+        fixed = sorted(order, key=lambda k: eps[k]['number'])
+        if fixed != order:
+            season['order'] = fixed
+            changed = True
+    if changed:
+        tmp = path + '.netotv'
+        with open(tmp, 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False, separators=(',', ':'))
+        os.replace(tmp, path)
+        log('put episodes in episode-number order')
+
+
 def main():
     monitor = xbmc.Monitor()
     seed_favourites()
@@ -191,6 +218,20 @@ def main():
     if copied:
         # The home rows were drawn before Idan+ was installed; draw them again now that it is.
         xbmc.executebuiltin('ReloadSkin()')
+    # Idan+ rewrites its saved seasons whenever a season is opened: fix the order again after each change.
+    seasons = xbmcvfs.translatePath('special://profile/addon_data/%s/watch/seasons.json' % IDANPLUS)
+    seen = None
+    while not monitor.waitForAbort(3):
+        try:
+            mtime = os.path.getmtime(seasons)
+        except OSError:
+            continue
+        if mtime != seen:
+            fix_episode_order(seasons)
+            try:
+                seen = os.path.getmtime(seasons)
+            except OSError:
+                seen = None
 
 
 main()

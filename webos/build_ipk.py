@@ -26,7 +26,10 @@ PACKAGEINFO = 'usr/palm/packages/%s/packageinfo.json' % NEW
 
 # Not needed for Idan+ on a TV remote (as in the Android build), plus the recording-server clients webOS ships.
 DROP = ('audioencoder.', 'game.controller.mouse', 'game.controller.snes', 'peripheral.joystick',
-        'service.xbmc.versioncheck', 'screensaver.xbmc.builtin.dim', 'pvr.')
+        'service.xbmc.versioncheck', 'screensaver.xbmc.builtin.dim', 'pvr.',
+        # Only Idan+ and what it needs: no official Kodi repository (its updates of bundled add-ons fail on webOS)
+        # and no library scrapers, weather icons or unused Python modules.
+        'repository.xbmc.org', 'metadata.album.universal', 'metadata.artists.universal', 'metadata.common.allmusic.com', 'metadata.common.fanart.tv', 'metadata.common.musicbrainz.org', 'metadata.common.theaudiodb.com', 'metadata.generic.albums', 'metadata.generic.artists', 'metadata.themoviedb.org.python', 'metadata.tvshows.themoviedb.org.python', 'resource.images.weathericons.default', 'script.module.pil', 'script.module.pycryptodome')
 # Our add-ons, from the Android build. inputstream.adaptive stays webOS's own: the Android one is an Android library.
 ADD = ('skin.fentastic', 'script.fentastic.helper', 'script.module.requests', 'script.module.urllib3',
        'script.module.certifi', 'script.module.chardet', 'script.module.idna', 'resource.language.he_il',
@@ -41,6 +44,7 @@ DEFAULTS = {  # same as the Android build's settings.xml
     'locale.keyboardlayouts': 'English QWERTY|Hebrew QWERTY', 'screensaver.mode': '',
     'addons.unknownsources': 'true', 'addons.updatemode': '1', 'subtitles.charset': 'CP1255',
     'filelists.showparentdiritems': 'false', 'lookandfeel.skin': 'skin.fentastic',
+    'musiclibrary.albumsscraper': '', 'musiclibrary.artistsscraper': '', 'scrapers.moviesdefault': 'metadata.local', 'scrapers.tvshowsdefault': 'metadata.local',
 }
 
 
