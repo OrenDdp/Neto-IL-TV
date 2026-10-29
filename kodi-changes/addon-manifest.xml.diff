@@ -1,0 +1,38 @@
+--- kodi-21.3/assets/system/addon-manifest.xml
++++ neto-il-tv/assets/system/addon-manifest.xml
+@@ -1,10 +1,6 @@
+ <addons>
+-  <addon>audioencoder.kodi.builtin.aac</addon>
+-  <addon>audioencoder.kodi.builtin.wma</addon>
+   <addon>game.controller.default</addon>
+   <addon>game.controller.keyboard</addon>
+-  <addon>game.controller.mouse</addon>
+-  <addon>game.controller.snes</addon>
+   <addon>kodi.binary.global.audioengine</addon>
+   <addon>kodi.binary.global.filesystem</addon>
+   <addon>kodi.binary.global.general</addon>
+@@ -40,7 +36,6 @@
+   <addon>resource.language.en_gb</addon>
+   <addon>resource.uisounds.kodi</addon>
+   <addon>screensaver.xbmc.builtin.black</addon>
+-  <addon>screensaver.xbmc.builtin.dim</addon>
+   <addon>script.module.pil</addon>
+   <addon>script.module.pycryptodome</addon>
+   <addon>skin.estuary</addon>
+@@ -53,6 +48,14 @@
+   <addon>xbmc.python</addon>
+   <addon>xbmc.webinterface</addon>
+   <addon optional="true">inputstream.adaptive</addon>
+-  <addon optional="true">peripheral.joystick</addon>
+-  <addon optional="true">service.xbmc.versioncheck</addon>
++  <addon>resource.language.he_il</addon>
++  <addon>service.netotv</addon>
++  <addon>plugin.video.netotv</addon>
++  <addon>skin.fentastic</addon>
++  <addon>script.fentastic.helper</addon>
++  <addon>script.module.requests</addon>
++  <addon>script.module.urllib3</addon>
++  <addon>script.module.certifi</addon>
++  <addon>script.module.chardet</addon>
++  <addon>script.module.idna</addon>
+ </addons>

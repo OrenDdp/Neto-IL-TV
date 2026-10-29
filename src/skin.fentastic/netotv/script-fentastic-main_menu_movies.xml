@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Neto-IL-TV: made by tools/make_tabs.py -->
+<includes>
+    <include name="MoviesMainMenu">
+        <item>
+            <label>[B]VOD[/B]</label>
+            <onclick>ActivateWindow(Videos,plugin://plugin.video.idanplus/?name=%5BB%5DVOD%5B%2FB%5D&amp;url=&amp;mode=2&amp;iconimage=special%3A%2F%2Fhome%2Faddons%2Fplugin.video.idanplus%2Ficon.png&amp;module=&amp;moredata=,return)</onclick>
+            <property name="menu_id">$NUMBER[19000]</property>
+            <thumb>icons/sidemenu/movies.png</thumb>
+            <property name="id">movies</property>
+        </item>
+    </include>
+</includes>

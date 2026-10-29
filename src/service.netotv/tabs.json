@@ -1,0 +1,75 @@
+{
+ "version": "2eef0526491a",
+ "rows": [
+  [
+   "custom1.main_menu",
+   "plugin://plugin.video.idanplus/?name=%5BB%5D%D7%9E%D7%95%D7%A2%D7%93%D7%A4%D7%99+%D7%A2%D7%99%D7%93%D7%9F+%D7%A4%D7%9C%D7%95%D7%A1%5B%2FB%5D&url=&mode=10&iconimage=special%3A%2F%2Fhome%2Faddons%2Fplugin.video.idanplus%2Ficon.png&module=&moredata=",
+   "[B]מועדפים[/B]",
+   "",
+   ""
+  ],
+  [
+   "custom1.widget.1",
+   "plugin://plugin.video.idanplus/?name=%5BB%5D%D7%9E%D7%95%D7%A2%D7%93%D7%A4%D7%99+%D7%A2%D7%99%D7%93%D7%9F+%D7%A4%D7%9C%D7%95%D7%A1%5B%2FB%5D&url=&mode=10&iconimage=special%3A%2F%2Fhome%2Faddons%2Fplugin.video.idanplus%2Ficon.png&module=&moredata=",
+   "[B][COLOR yellow]מועדפים[/COLOR][/B]",
+   "WidgetListBigLandscapeGrid",
+   "[B][COLOR yellow]מועדפים[/COLOR][/B] | BigLandscape Grid"
+  ],
+  [
+   "custom2.main_menu",
+   "plugin://plugin.video.netotv/?row=live",
+   "[B]ערוצים חיים[/B]",
+   "",
+   ""
+  ],
+  [
+   "custom2.widget.1",
+   "plugin://plugin.video.netotv/?row=live",
+   "[B][COLOR yellow]ערוצים חיים[/COLOR][/B]",
+   "WidgetListBigLandscapeGrid",
+   "[B][COLOR yellow]ערוצים חיים[/COLOR][/B] | BigLandscape Grid"
+  ],
+  [
+   "custom3.main_menu",
+   "plugin://plugin.video.idanplus/?name=%5BB%5D%D7%94%D7%9E%D7%A9%D7%9A+%D7%A6%D7%A4%D7%99%D7%99%D7%94%5B%2FB%5D&url=&mode=27&iconimage=special%3A%2F%2Fhome%2Faddons%2Fplugin.video.idanplus%2Ficon.png&module=&moredata=",
+   "[B]המשך צפייה[/B]",
+   "",
+   ""
+  ],
+  [
+   "custom3.widget.1",
+   "plugin://plugin.video.idanplus/?name=%5BB%5D%D7%94%D7%9E%D7%A9%D7%9A+%D7%A6%D7%A4%D7%99%D7%99%D7%94%5B%2FB%5D&url=&mode=27&iconimage=special%3A%2F%2Fhome%2Faddons%2Fplugin.video.idanplus%2Ficon.png&module=&moredata=",
+   "[B][COLOR yellow]המשך צפייה[/COLOR][/B]",
+   "WidgetListLandscapeAlways",
+   "[B][COLOR yellow]המשך צפייה[/COLOR][/B] | BigLandscape Grid"
+  ],
+  [
+   "movie.main_menu",
+   "plugin://plugin.video.idanplus/?name=%5BB%5DVOD%5B%2FB%5D&url=&mode=2&iconimage=special%3A%2F%2Fhome%2Faddons%2Fplugin.video.idanplus%2Ficon.png&module=&moredata=",
+   "[B]VOD[/B]",
+   "",
+   ""
+  ],
+  [
+   "movie.widget.1",
+   "plugin://plugin.video.idanplus/?name=%5BB%5DVOD%5B%2FB%5D&url=&mode=2&iconimage=special%3A%2F%2Fhome%2Faddons%2Fplugin.video.idanplus%2Ficon.png&module=&moredata=",
+   "[B][COLOR yellow]VOD[/COLOR][/B]",
+   "WidgetListBigLandscapeGrid",
+   "[B][COLOR yellow]VOD[/COLOR][/B] | BigLandscape Grid"
+  ],
+  [
+   "tvshow.main_menu",
+   "plugin://plugin.video.netotv/?row=backup",
+   "[B]ערוצי גיבוי[/B]",
+   "",
+   ""
+  ],
+  [
+   "tvshow.widget.1",
+   "plugin://plugin.video.netotv/?row=backup",
+   "[B][COLOR yellow]ערוצי גיבוי[/COLOR][/B]",
+   "WidgetListBigLandscapeGrid",
+   "[B][COLOR yellow]ערוצי גיבוי[/COLOR][/B] | BigLandscape Grid"
+  ]
+ ]
+}

@@ -1,0 +1,23 @@
+<keymap>
+  <!-- Neto-IL-TV: the red button opens the item's menu (add to Idan+ favourites and so on). LG remotes give Kodi
+       no long press on OK, which is where that menu normally lives. -->
+  <global>
+    <keyboard>
+      <red>ContextMenu</red>
+    </keyboard>
+  </global>
+  <!-- Neto-IL-TV: Back while a channel is playing stops it and returns to the channel list
+       (Kodi's default keeps the video playing in the background). -->
+  <FullscreenVideo>
+    <keyboard>
+      <backspace>Stop</backspace>
+      <escape>Stop</escape>
+    </keyboard>
+    <remote>
+      <back>Stop</back>
+    </remote>
+    <appcommand>
+      <browser_back>Stop</browser_back>
+    </appcommand>
+  </FullscreenVideo>
+</keymap>

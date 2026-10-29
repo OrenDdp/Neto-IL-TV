@@ -1,0 +1,63 @@
+--- kodi-21.3/AndroidManifest.xml
++++ neto-il-tv/AndroidManifest.xml
+@@ -1,4 +1,4 @@
+-<?xml version="1.0" encoding="utf-8" standalone="no"?><manifest xmlns:android="http://schemas.android.com/apk/res/android" android:compileSdkVersion="34" android:compileSdkVersionCodename="14" android:installLocation="auto" package="org.xbmc.kodi" platformBuildVersionCode="34" platformBuildVersionName="14">
++<?xml version="1.0" encoding="utf-8" standalone="no"?><manifest xmlns:android="http://schemas.android.com/apk/res/android" android:compileSdkVersion="34" android:compileSdkVersionCodename="14" android:installLocation="auto" package="org.xbmc.neto" platformBuildVersionCode="34" platformBuildVersionName="14">
+     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
+     <uses-permission android:name="android.permission.INTERNET"/>
+@@ -6,7 +6,6 @@
+     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+     <uses-feature android:name="android.hardware.bluetooth" android:required="false"/>
+     <uses-feature android:name="android.hardware.microphone" android:required="false"/>
+     <uses-feature android:name="android.hardware.screen.landscape" android:required="true"/>
+@@ -27,7 +26,7 @@
+     <uses-permission android:name="com.android.providers.tv.permission.WRITE_EPG_DATA"/>
+     <uses-permission android:name="com.android.providers.tv.permission.READ_EPG_DATA"/>
+     <application android:appComponentFactory="androidx.core.app.CoreComponentFactory" android:banner="@drawable/banner" android:extractNativeLibs="true" android:hasCode="true" android:icon="@drawable/ic_launcher" android:label="@string/app_name" android:logo="@drawable/banner" android:requestLegacyExternalStorage="true">
+-        <activity android:configChanges="colorMode|keyboard|keyboardHidden|navigation|orientation|screenLayout|screenSize|touchscreen" android:exported="true" android:finishOnTaskLaunch="true" android:launchMode="singleInstance" android:name="org.xbmc.kodi.Splash" android:screenOrientation="sensorLandscape" android:theme="@style/AppTheme">
++        <activity android:configChanges="colorMode|keyboard|keyboardHidden|navigation|orientation|screenLayout|screenSize|touchscreen" android:exported="true" android:finishOnTaskLaunch="true" android:launchMode="singleInstance" android:name="org.xbmc.neto.Splash" android:screenOrientation="sensorLandscape" android:theme="@style/AppTheme">
+             <intent-filter>
+                 <action android:name="android.intent.action.MAIN"/>
+                 <category android:name="android.intent.category.LAUNCHER"/>
+@@ -56,10 +55,10 @@
+                 <data android:scheme="smb"/>
+             </intent-filter>
+         </activity>
+-        <activity android:configChanges="colorMode|keyboard|keyboardHidden|navigation|orientation|screenLayout|screenSize|touchscreen" android:exported="true" android:finishOnTaskLaunch="true" android:launchMode="singleInstance" android:name="org.xbmc.kodi.Main" android:screenOrientation="sensorLandscape" android:theme="@style/AppTheme">
++        <activity android:configChanges="colorMode|keyboard|keyboardHidden|navigation|orientation|screenLayout|screenSize|touchscreen" android:exported="true" android:finishOnTaskLaunch="true" android:launchMode="singleInstance" android:name="org.xbmc.neto.Main" android:screenOrientation="sensorLandscape" android:theme="@style/AppTheme">
+             <meta-data android:name="android.app.lib_name" android:value="kodi"/>
+         </activity>
+-        <receiver android:exported="true" android:name="org.xbmc.kodi.XBMCBroadcastReceiver">
++        <receiver android:exported="true" android:name="org.xbmc.neto.XBMCBroadcastReceiver">
+             <intent-filter>
+                 <action android:name="android.intent.action.DREAMING_STOPPED"/>
+                 <action android:name="android.bluetooth.a2dp.profile.action.CONNECTION_STATE_CHANGED"/>
+@@ -67,10 +66,10 @@
+                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
+             </intent-filter>
+         </receiver>
+-        <provider android:authorities="org.xbmc.kodi.media" android:exported="true" android:name="org.xbmc.kodi.content.XBMCMediaContentProvider"/>
+-        <provider android:authorities="org.xbmc.kodi.file" android:exported="true" android:name="org.xbmc.kodi.content.XBMCFileContentProvider"/>
+-        <provider android:authorities="org.xbmc.kodi.ytdl" android:exported="true" android:name="org.xbmc.kodi.content.XBMCYTDLContentProvider"/>
+-        <activity android:exported="true" android:name="org.xbmc.kodi.XBMCSearchableActivity">
++        <provider android:authorities="org.xbmc.neto.media" android:exported="true" android:name="org.xbmc.neto.content.XBMCMediaContentProvider"/>
++        <provider android:authorities="org.xbmc.neto.file" android:exported="true" android:name="org.xbmc.neto.content.XBMCFileContentProvider"/>
++        <provider android:authorities="org.xbmc.neto.ytdl" android:exported="true" android:name="org.xbmc.neto.content.XBMCYTDLContentProvider"/>
++        <activity android:exported="true" android:name="org.xbmc.neto.XBMCSearchableActivity">
+             <intent-filter>
+                 <action android:name="android.intent.action.SEARCH"/>
+                 <category android:name="android.intent.category.DEFAULT"/>
+@@ -83,7 +82,7 @@
+             </intent-filter>
+             <meta-data android:name="android.app.searchable" android:resource="@xml/searchable"/>
+         </activity>
+-        <service android:exported="false" android:name="org.xbmc.kodi.channels.SyncChannelJobService" android:permission="android.permission.BIND_JOB_SERVICE"/>
+-        <service android:exported="false" android:name="org.xbmc.kodi.channels.SyncProgramsJobService" android:permission="android.permission.BIND_JOB_SERVICE"/>
++        <service android:exported="false" android:name="org.xbmc.neto.channels.SyncChannelJobService" android:permission="android.permission.BIND_JOB_SERVICE"/>
++        <service android:exported="false" android:name="org.xbmc.neto.channels.SyncProgramsJobService" android:permission="android.permission.BIND_JOB_SERVICE"/>
+     </application>
+ </manifest>

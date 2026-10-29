@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Neto-IL-TV: made by tools/make_tabs.py -->
+<includes>
+    <include name="Custom3MainMenu">
+        <item>
+            <label>[B]המשך צפייה[/B]</label>
+            <onclick>ActivateWindow(Videos,plugin://plugin.video.idanplus/?name=%5BB%5D%D7%94%D7%9E%D7%A9%D7%9A+%D7%A6%D7%A4%D7%99%D7%99%D7%94%5B%2FB%5D&amp;url=&amp;mode=27&amp;iconimage=special%3A%2F%2Fhome%2Faddons%2Fplugin.video.idanplus%2Ficon.png&amp;module=&amp;moredata=,return)</onclick>
+            <property name="menu_id">$NUMBER[25000]</property>
+            <thumb>icons/sidemenu/videos.png</thumb>
+            <property name="id">custom3</property>
+        </item>
+    </include>
+</includes>
