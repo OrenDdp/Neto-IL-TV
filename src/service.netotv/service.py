@@ -4,17 +4,21 @@
 # Installed into a regular Kodi from our repository, it also sets that Kodi up as the APK does (see setup_kodi).
 # The page itself is the FENtastic home screen with the Idan+ tab (skin.fentastic/netotv/), as in Kodi POV IL;
 # Back from its side menu hides the app (skin Home.xml), Back while playing stops (keymaps/zz-netotv.xml).
+# With the "sync folder" setting set, Idan+'s watch records are shared with the other Kodi installs (idansync.py).
 import json
 import os
 import re
 import shutil
 import sqlite3
+import time
 import zipfile
 from io import BytesIO
 
 import xbmc
 import xbmcaddon
 import xbmcvfs
+
+from idansync import Sync
 
 ADDON = xbmcaddon.Addon()
 PAYLOAD = os.path.join(xbmcvfs.translatePath(ADDON.getAddonInfo('path')), 'payload')
@@ -209,6 +213,13 @@ def fix_episode_order(path):
         log('put episodes in episode-number order')
 
 
+def mtime(path):
+    try:
+        return os.path.getmtime(path)
+    except OSError:
+        return None
+
+
 def main():
     monitor = xbmc.Monitor()
     seed_favourites()
@@ -220,18 +231,23 @@ def main():
         xbmc.executebuiltin('ReloadSkin()')
     # Idan+ rewrites its saved seasons whenever a season is opened: fix the order again after each change.
     seasons = xbmcvfs.translatePath('special://profile/addon_data/%s/watch/seasons.json' % IDANPLUS)
-    seen = None
+    progress = os.path.join(os.path.dirname(seasons), 'progress.json')
+    player = xbmc.Player()
+    folder = ADDON.getSetting('sync_folder').strip()
+    sync = Sync('special://profile/addon_data/service.netotv/', folder,
+                lambda watch: fix_episode_order(os.path.join(watch, 'seasons.json'))) if folder else None
+    seen = progress_seen = None
+    last_sync = 0
     while not monitor.waitForAbort(3):
-        try:
-            mtime = os.path.getmtime(seasons)
-        except OSError:
-            continue
-        if mtime != seen:
+        if mtime(seasons) != seen:
             fix_episode_order(seasons)
+            seen = mtime(seasons)
+        # Sync every 30 seconds, and as soon as Idan+ wrote new progress (a viewing stopped or reached a minute).
+        if sync and (time.time() - last_sync >= 30 or mtime(progress) != progress_seen):
             try:
-                seen = os.path.getmtime(seasons)
-            except OSError:
-                seen = None
-
+                sync.run(pull=not player.isPlaying())
+            except Exception as e:  # a network error must never stop the service
+                log('sync: %s' % e)
+            last_sync, progress_seen, seen = time.time(), mtime(progress), mtime(seasons)
 
 main()

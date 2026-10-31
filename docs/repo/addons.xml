@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addons>
-<addon id="service.netotv" name="Neto-IL-TV" version="1.0.28" provider-name="local">
+<addon id="service.netotv" name="Neto-IL-TV" version="1.0.29" provider-name="local">
   <requires>
     <import addon="xbmc.python" version="3.0.0"/>
     <import addon="script.module.requests"/>
