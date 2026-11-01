@@ -65,4 +65,5 @@ Neto-IL-TV מוריד את עידן+, מעביר את Kodi לעברית ולסק
 ## רישיונות
 - קבצי ההתקנה מבוססים על [Kodi](https://kodi.tv) הרשמי (GPL-2.0); הקוד המלא ב־[xbmc/xbmc](https://github.com/xbmc/xbmc), והשינויים שלנו ב־`kodi-changes/`. "Kodi" הוא סימן מסחרי של XBMC Foundation; Neto-IL-TV לא משתמש בשם או בלוגו של Kodi כשם המוצר.
 - FENtastic והעוזר שלו: GPL-2.0 (קוד), CC BY-SA 4.0 (גרפיקה), של Ivar Brandt ו־Tikipeter.
+- הפונט Rubik: SIL Open Font License 1.1 (`src/skin.fentastic/fonts/rubik_license.txt`). הפונט הקודם נשאר לבחירה בשם "Noto" (הגדרות > ממשק > סקין > פונטים).
 - הקוד שלנו (`src/service.netotv`, `src/plugin.video.netotv`, `tools/`, `webos/`): GPL-2.0.
