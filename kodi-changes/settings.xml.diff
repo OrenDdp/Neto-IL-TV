@@ -38,7 +38,7 @@
          <setting id="lookandfeel.skin" type="addon" label="166" help="36103">
            <level>0</level>
 -          <default>skin.estuary</default>
-+          <default>skin.fentastic</default>
++          <default>skin.dockil</default>
            <constraints>
              <addontype>xbmc.gui.skin</addontype>
            </constraints>

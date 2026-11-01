@@ -2,8 +2,8 @@
 # First run: copies the bundled add-ons (payload/: Fishenzon's repository and Idan+'s helpers) into the user add-on
 # folder, downloads Idan+ itself from Fishenzon's repository (it is not shipped here), and enables them all.
 # Installed into a regular Kodi from our repository, it also sets that Kodi up as the APK does (see setup_kodi).
-# The page itself is the FENtastic home screen with the Idan+ tab (skin.fentastic/netotv/), as in Kodi POV IL;
-# Back from its side menu hides the app (skin Home.xml), Back while playing stops (keymaps/zz-netotv.xml).
+# The page itself is the Idan+ Dock of the DockIL skin (skin.dockil, which turns to its Neto-IL-TV mode when this
+# service is installed); Back from the Dock hides the app, Back while playing stops (keymaps/zz-netotv.xml).
 # With the "sync folder" setting set, Idan+'s watch records are shared with the other Kodi installs (idansync.py).
 import json
 import os
@@ -168,12 +168,27 @@ def setup_kodi():
                            ('locale.keyboardlayouts', ['English QWERTY', 'Hebrew QWERTY']),
                            ('subtitles.charset', 'CP1255'), ('addons.unknownsources', True),
                            ('addons.updatemode', 1), ('filelists.showparentdiritems', False),
-                           ('lookandfeel.skin', 'skin.fentastic')):
+                           ('lookandfeel.skin', 'skin.dockil')):
         rpc('Settings.SetSettingValue', setting=setting, value=value)
     xbmc.executebuiltin('Action(reloadkeymaps)')
     os.makedirs(os.path.dirname(done_file), exist_ok=True)
     open(done_file, 'w').close()
     log('set up this Kodi for Neto-IL-TV')
+
+
+def move_to_dockil():
+    """Up to 1.0.30 the skin was our FENtastic (skin.fentastic), which updates no longer bring: switch to DockIL once,
+    with the skin settings made so far."""
+    skin = rpc('Settings.GetSettingValue', setting='lookandfeel.skin').get('result', {}).get('value')
+    if skin != 'skin.fentastic':
+        return
+    data = xbmcvfs.translatePath('special://profile/addon_data/')
+    old, new = os.path.join(data, 'skin.fentastic', 'settings.xml'), os.path.join(data, 'skin.dockil', 'settings.xml')
+    if os.path.exists(old) and not os.path.exists(new):
+        os.makedirs(os.path.dirname(new), exist_ok=True)
+        shutil.copy(old, new)
+    rpc('Settings.SetSettingValue', setting='lookandfeel.skin', value='skin.dockil')
+    log('moved from skin.fentastic to skin.dockil')
 
 
 def seed_favourites():
@@ -224,6 +239,7 @@ def main():
     monitor = xbmc.Monitor()
     seed_favourites()
     setup_kodi()
+    move_to_dockil()
     register_tabs()
     copied = install(monitor)
     if copied:

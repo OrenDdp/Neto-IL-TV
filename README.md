@@ -1,6 +1,6 @@
 # Neto-IL-TV
 
-Kodi עם התוסף עידן+ בלבד. בראש העמוד Dock של הקטגוריות (ערוצים חיים, VOD, המשך צפייה, מועדפים, ערוצי גיבוי), ומתחתיו גריד של אריחים גדולים. ל־LG יש גם גרסה עם לשוניות בצד.
+Kodi עם התוסף עידן+ בלבד, בסקין [DockIL](https://github.com/OrenDdp/DockIL): בראש העמוד Dock של הקטגוריות (ערוצים חיים, המשך צפייה, מועדפים, VOD, ערוצי גיבוי), ומתחתיו גריד ברוחב כל המסך.
 
 > **הבהרה:** Neto-IL-TV הוא פרויקט פרטי ולא רשמי. הוא לא קשור לעידן+, ל־Fishenzon, ל־Kodi / XBMC Foundation, ל־POV או לאף ערוץ, ולא מאושר על ידם.
 > הוא לא מכיל ולא מאחסן שום תוכן: כל השידורים וה־VOD מגיעים ישירות מהאתרים הרשמיים של הערוצים, דרך התוסף עידן+ של Fishenzon.
@@ -23,7 +23,8 @@ Kodi עם התוסף עידן+ בלבד. בראש העמוד Dock של הקטג�
 או מורידים ישירות: [Neto-IL-TV-android.apk](https://github.com/OrenDdp/Neto-IL-TV/releases/latest/download/Neto-IL-TV-android.apk). מותקן לצד Kodi רגיל ולא נוגע בו.
 
 ### LG webOS
-מורידים אחד מקובצי ה־IPK (Dock או לשוניות) מ־[Releases](../../releases/latest) ומתקינים במצב מפתחים (webOS Dev Manager, או `ares-install`).
+מורידים אחד מקובצי ה־IPK מ־[Releases](../../releases/latest) ומתקינים במצב מפתחים (webOS Dev Manager, או `ares-install`).
+שני הקבצים נראים אותו דבר מאז 1.0.31; הם שתי אפליקציות נפרדות (`lg-dock` ו־`lg-tabs`) רק כדי שמי שהתקין אחת מהן יקבל עדכון.
 
 ### Kodi רגיל (21 ומעלה)
 1. הגדרות > מערכת > הרחבות: להפעיל **מקורות לא ידועים**.
@@ -48,7 +49,7 @@ Neto-IL-TV מוריד את עידן+, מעביר את Kodi לעברית ולסק
 3. מפעילים את האפליקציה מחדש.
 
 כל מכשיר כותב לתיקייה רק את הקובץ שלו, וממזג אליו את מה שנצפה במכשירים האחרים. לכל פרק נשמרת הצפייה האחרונה.
-אם התיקייה לא זמינה, הכל ממשיך לעבוד כרגיל. הקוד (`idansync.py`) זהה לזה של התוסף הנלווה ל־David-DockIL ב־Kodi POV IL,
+אם התיקייה לא זמינה, הכל ממשיך לעבוד כרגיל. הקוד (`idansync.py`) זהה לזה של התוסף הנלווה ל־DockIL ב־Kodi POV IL,
 כך שאפשר לסנכרן גם בין Neto-IL-TV ל־POV IL.
 
 ## מה יש כאן
@@ -56,7 +57,7 @@ Neto-IL-TV מוריד את עידן+, מעביר את Kodi לעברית ולסק
 |---|---|
 | `src/service.netotv` | מתקין את עידן+, מגדיר את Kodi ורושם את הלשוניות |
 | `src/plugin.video.netotv` | מפצל את הערוצים החיים לערוצים רגילים וערוצי גיבוי |
-| `src/skin.fentastic` | [FENtastic](https://github.com/ivarbrandt/skin.fentastic) של Ivar Brandt (GPL-2.0 / CC BY-SA 4.0), עם תפריט הלשוניות, לוגו, צבעים ותצוגות Grid |
+| `src/skin.dockil` | הסקין [DockIL](https://github.com/OrenDdp/DockIL), מבוסס [FENtastic](https://github.com/ivarbrandt/skin.fentastic) של Ivar Brandt (GPL-2.0 / CC BY-SA 4.0). כשהשירות של Neto-IL-TV מותקן הוא מציג רק את ה־Dock של עידן+, עם הלוגו של Neto-IL-TV |
 | `src/script.fentastic.helper` | העוזר של FENtastic (GPL-2.0), עם ברירות המחדל של הלשוניות ותצוגות Grid |
 | `kodi-changes/` | כל מה ששונה ב־Kodi עצמו, כ־diff מול הגרסה הרשמית |
 | `docs/` | מאגר ה־Kodi (GitHub Pages) |
@@ -65,5 +66,5 @@ Neto-IL-TV מוריד את עידן+, מעביר את Kodi לעברית ולסק
 ## רישיונות
 - קבצי ההתקנה מבוססים על [Kodi](https://kodi.tv) הרשמי (GPL-2.0); הקוד המלא ב־[xbmc/xbmc](https://github.com/xbmc/xbmc), והשינויים שלנו ב־`kodi-changes/`. "Kodi" הוא סימן מסחרי של XBMC Foundation; Neto-IL-TV לא משתמש בשם או בלוגו של Kodi כשם המוצר.
 - FENtastic והעוזר שלו: GPL-2.0 (קוד), CC BY-SA 4.0 (גרפיקה), של Ivar Brandt ו־Tikipeter.
-- הפונט Rubik: SIL Open Font License 1.1 (`src/skin.fentastic/fonts/rubik_license.txt`). הפונט הקודם נשאר לבחירה בשם "Noto" (הגדרות > ממשק > סקין > פונטים).
+- הפונט Rubik: SIL Open Font License 1.1 (`src/skin.dockil/fonts/rubik_license.txt`). הפונט הקודם נשאר לבחירה בשם "Noto" (הגדרות > ממשק > סקין > פונטים).
 - הקוד שלנו (`src/service.netotv`, `src/plugin.video.netotv`, `tools/`, `webos/`): GPL-2.0.

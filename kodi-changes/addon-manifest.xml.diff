@@ -28,7 +28,7 @@
 +  <addon>resource.language.he_il</addon>
 +  <addon>service.netotv</addon>
 +  <addon>plugin.video.netotv</addon>
-+  <addon>skin.fentastic</addon>
++  <addon>skin.dockil</addon>
 +  <addon>script.fentastic.helper</addon>
 +  <addon>script.module.requests</addon>
 +  <addon>script.module.urllib3</addon>

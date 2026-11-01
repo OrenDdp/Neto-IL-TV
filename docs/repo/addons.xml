@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addons>
-<addon id="service.netotv" name="Neto-IL-TV" version="1.0.30" provider-name="local">
+<addon id="service.netotv" name="Neto-IL-TV" version="1.0.31" provider-name="local">
   <requires>
     <import addon="xbmc.python" version="3.0.0"/>
     <import addon="script.module.requests"/>
     <import addon="resource.language.he_il"/>
-    <import addon="skin.fentastic" version="1.0.25.1"/>
+    <import addon="skin.dockil" version="0.4.1"/>
     <import addon="script.fentastic.helper" version="0.6.21"/>
     <import addon="plugin.video.netotv" version="1.0.0"/>
   </requires>
   <extension point="xbmc.service" library="service.py" start="login"/>
   <extension point="xbmc.addon.metadata">
-    <summary lang="en_GB">Neto-IL-TV: installs Idan+ and sets up the home page with its tabs.</summary>
+    <summary lang="en_GB">Neto-IL-TV: installs Idan+ and sets up the home page: the Idan+ Dock of the DockIL skin.</summary>
     <platform>all</platform>
     <assets>
       <icon>icon.png</icon>
@@ -33,11 +33,11 @@
     </assets>
   </extension>
 </addon>
-<addon id="skin.fentastic" version="1.0.25.2" name="FENtastic"
-	provider-name="Ivar Brandt">
+<addon id="skin.dockil" version="0.4.1" name="DockIL"
+	provider-name="David (based on POV-IL FENtastic by Ivar Brandt)">
 	<requires>
-		<import addon="xbmc.gui" version="5.17.0" />
-		<import addon="script.fentastic.helper" version="0.6.21"/>
+		<!-- <import addon="xbmc.gui" version="5.17.0" /> -->
+		<import addon="script.fentastic.helper" />
 	</requires>
 	<extension point="xbmc.gui.skin" debugging="false">
 		<res width="1920" height="1440" aspect="4:3" default="false" folder="xml" />
@@ -52,21 +52,18 @@
 	<extension point="xbmc.addon.metadata">
 		<platform>all</platform>
 		<license>CC BY-SA 4.0, GNU GENERAL PUBLIC LICENSE Version 2.0</license>
-		<forum>http://forum.kodi.tv/</forum>
-		<source>https://github.com/xbmc/skin.estuary/</source>
+		<forum>https://github.com/OrenDdp/DockIL/issues</forum>
+		<source>https://github.com/OrenDdp/DockIL</source>
 		<assets>
 			<icon>resources/icon.png</icon>
 			<fanart>resources/fanart.jpg</fanart>
-			<screenshot>resources/images/customizable_widgets.jpg</screenshot>
-			<screenshot>resources/images/infopanel.jpg</screenshot>
-			<screenshot>resources/images/viewtypes1.jpg</screenshot>
 		</assets>
-		<summary lang="en_GB">FENtastic skin by Ivar Brandt (Estuary MOD)</summary>
-		<summary lang="en_NZ">FENtastic skin by Ivar Brandt (Estuary MOD)</summary>
-		<summary lang="en_US">FENtastic skin by Ivar Brandt (Estuary MOD)</summary>
-		<description lang="en_GB">FENtastic is a modified version of the default Estuary skin for Kodi Nexus. It is intended for use only with FEN.[CR][CR]See [B]CHANGELOG[/B] located in Skin settings » Extra info for latest changes.</description>
-		<description lang="en_NZ">FENtastic is a modified version of the default Estuary skin for Kodi Nexus. It is intended for use only with FEN.[CR][CR]See [B]CHANGELOG[/B] located in Skin settings » Extra info for latest changes.</description>
-		<description lang="en_US">FENtastic is a modified version of the default Estuary skin for Kodi Nexus. It is intended for use only with FEN.[CR][CR]See [B]CHANGELOG[/B] located in Skin settings » Extra info for latest changes.</description>
+		<summary lang="en_GB">DockIL: Dock tabs and grids per category, for Kodi POV IL, Umbrella, Fen Light and Idan Plus</summary>
+		<summary lang="en_NZ">DockIL: Dock tabs and grids per category, for Kodi POV IL, Umbrella, Fen Light and Idan Plus</summary>
+		<summary lang="en_US">DockIL: Dock tabs and grids per category, for Kodi POV IL, Umbrella, Fen Light and Idan Plus</summary>
+		<description lang="en_GB">A FENtastic based skin (Ivar Brandt) in which every side-menu category is a Dock of tabs with a grid under it. Works in Kodi POV IL (with its logo and look), and in any Kodi 21 with Umbrella, Fen Light or Idan Plus. Rubik font (SIL OFL 1.1), background photo from Pexels.</description>
+		<description lang="en_NZ">A FENtastic based skin (Ivar Brandt) in which every side-menu category is a Dock of tabs with a grid under it. Works in Kodi POV IL (with its logo and look), and in any Kodi 21 with Umbrella, Fen Light or Idan Plus. Rubik font (SIL OFL 1.1), background photo from Pexels.</description>
+		<description lang="en_US">A FENtastic based skin (Ivar Brandt) in which every side-menu category is a Dock of tabs with a grid under it. Works in Kodi POV IL (with its logo and look), and in any Kodi 21 with Umbrella, Fen Light or Idan Plus. Rubik font (SIL OFL 1.1), background photo from Pexels.</description>
 	</extension>
 </addon>
 <addon id="script.fentastic.helper" name="FENtastic Helper" version="0.6.21" provider-name="Tikipeter, Ivar Brandt">

@@ -1,0 +1,559 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Written by scripts/dockil/docks.py (tools/make_docks.py on the PC, Set widgets on the TV). -->
+<includes>
+	<expression name="dockil_pov">System.HasAddon(plugin.video.pov)</expression>
+	<expression name="dockil_fen">System.HasAddon(plugin.video.fen) + !System.HasAddon(plugin.video.pov)</expression>
+	<expression name="dockil_umb">System.HasAddon(plugin.video.umbrella) + !System.HasAddon(plugin.video.pov) + !System.HasAddon(plugin.video.fen)</expression>
+	<expression name="dockil_neto">System.HasAddon(service.netotv)</expression>
+	<include name="DockMainMenu">
+		<item>
+			<label>סדרות</label>
+			<onclick>SetFocus(30040)</onclick>
+			<property name="menu_id">$NUMBER[30040]</property>
+			<property name="id">dock_tvshows</property>
+			<thumb>icons/sidemenu/dockil_tvshows.png</thumb>
+			<visible>[[$EXP[dockil_pov]] | [$EXP[dockil_fen]] | [$EXP[dockil_umb]]] + !Skin.HasSetting(dock.hide.tvshows) + !$EXP[dockil_neto]</visible>
+		</item>
+		<item>
+			<label>סרטים</label>
+			<onclick>SetFocus(30140)</onclick>
+			<property name="menu_id">$NUMBER[30140]</property>
+			<property name="id">dock_movies</property>
+			<thumb>icons/sidemenu/dockil_movies.png</thumb>
+			<visible>[[$EXP[dockil_pov]] | [$EXP[dockil_fen]] | [$EXP[dockil_umb]]] + !Skin.HasSetting(dock.hide.movies) + !$EXP[dockil_neto]</visible>
+		</item>
+		<item>
+			<label>עידן פלוס</label>
+			<onclick>SetFocus(30240)</onclick>
+			<property name="menu_id">$NUMBER[30240]</property>
+			<property name="id">dock_idanplus</property>
+			<thumb>icons/sidemenu/dockil_livetv.png</thumb>
+			<visible>[[System.HasAddon(plugin.video.idanplus) + $EXP[dockil_neto]] | [System.HasAddon(plugin.video.idanplus) + !$EXP[dockil_neto]] | [System.HasAddon(plugin.video.idanplus)]] + !Skin.HasSetting(dock.hide.idanplus)</visible>
+		</item>
+		<item>
+			<label>בגלל שראית</label>
+			<onclick>SetFocus(30301)</onclick>
+			<property name="menu_id">$NUMBER[30301]</property>
+			<property name="id">dock_byw</property>
+			<thumb>icons/sidemenu/videos.png</thumb>
+			<visible>[[$EXP[dockil_pov]]] + !Skin.HasSetting(dock.hide.byw) + !$EXP[dockil_neto]</visible>
+		</item>
+		<item>
+			<label>דף הבית</label>
+			<onclick>SetFocus(30450)</onclick>
+			<property name="menu_id">$NUMBER[30450]</property>
+			<property name="id">dock_home</property>
+			<thumb>icons/sidemenu/dockil_home.png</thumb>
+			<visible>[[System.HasAddon(plugin.video.pov)] | [System.HasAddon(service.subtitles.kodipovilai)] | [System.HasAddon(plugin.program.kodipovilwizard)] | [System.HasAddon(plugin.program.orderfavourites-hebrew)]] + !Skin.HasSetting(dock.hide.home) + !$EXP[dockil_neto]</visible>
+		</item>
+	</include>
+	<include name="DockSettings">
+		<control type="button" id="62000">
+			<label>Remake menus and widgets</label>
+			<include>DefaultSettingButton</include>
+			<onclick>RunScript(special://skin/scripts/dockil_manager.py,remake)</onclick>
+		</control>
+		<control type="radiobutton" id="62001">
+			<label>[B]סדרות[/B]</label>
+			<include>DefaultSettingButton</include>
+			<selected>!Skin.HasSetting(dock.hide.tvshows)</selected>
+			<onclick>Skin.ToggleSetting(dock.hide.tvshows)</onclick>
+		</control>
+		<control type="button" id="62002">
+			<label>   - Set widgets</label>
+			<include>DefaultSettingButton</include>
+			<onclick>RunScript(special://skin/scripts/dockil_manager.py,section=tvshows)</onclick>
+			<visible>!Skin.HasSetting(dock.hide.tvshows)</visible>
+		</control>
+		<control type="radiobutton" id="62003">
+			<label>[B]סרטים[/B]</label>
+			<include>DefaultSettingButton</include>
+			<selected>!Skin.HasSetting(dock.hide.movies)</selected>
+			<onclick>Skin.ToggleSetting(dock.hide.movies)</onclick>
+		</control>
+		<control type="button" id="62004">
+			<label>   - Set widgets</label>
+			<include>DefaultSettingButton</include>
+			<onclick>RunScript(special://skin/scripts/dockil_manager.py,section=movies)</onclick>
+			<visible>!Skin.HasSetting(dock.hide.movies)</visible>
+		</control>
+		<control type="radiobutton" id="62005">
+			<label>[B]עידן פלוס[/B]</label>
+			<include>DefaultSettingButton</include>
+			<selected>!Skin.HasSetting(dock.hide.idanplus)</selected>
+			<onclick>Skin.ToggleSetting(dock.hide.idanplus)</onclick>
+		</control>
+		<control type="button" id="62006">
+			<label>   - Set widgets</label>
+			<include>DefaultSettingButton</include>
+			<onclick>RunScript(special://skin/scripts/dockil_manager.py,section=idanplus)</onclick>
+			<visible>!Skin.HasSetting(dock.hide.idanplus)</visible>
+		</control>
+		<control type="radiobutton" id="62007">
+			<label>[B]בגלל שראית[/B]</label>
+			<include>DefaultSettingButton</include>
+			<selected>!Skin.HasSetting(dock.hide.byw)</selected>
+			<onclick>Skin.ToggleSetting(dock.hide.byw)</onclick>
+		</control>
+		<control type="button" id="62008">
+			<label>   - Set widgets</label>
+			<include>DefaultSettingButton</include>
+			<onclick>RunScript(special://skin/scripts/dockil_manager.py,section=byw)</onclick>
+			<visible>!Skin.HasSetting(dock.hide.byw)</visible>
+		</control>
+		<control type="radiobutton" id="62009">
+			<label>[B]דף הבית[/B]</label>
+			<include>DefaultSettingButton</include>
+			<selected>!Skin.HasSetting(dock.hide.home)</selected>
+			<onclick>Skin.ToggleSetting(dock.hide.home)</onclick>
+		</control>
+		<control type="button" id="62010">
+			<label>   - Display type</label>
+			<include>DefaultSettingButton</include>
+			<onclick>RunScript(special://skin/scripts/dockil_manager.py,section=home)</onclick>
+			<visible>!Skin.HasSetting(dock.hide.home)</visible>
+		</control>
+	</include>
+	<include name="DockSections">
+		<control type="group" id="30000">
+			<visible>String.IsEqual(Container(9000).ListItem.Property(id),dock_tvshows)</visible>
+			<include content="Visible_Right_Delayed"><param name="id" value="dock_tvshows"/></include>
+			<defaultcontrol always="true">30040</defaultcontrol>
+			<control type="list" id="30040">
+				<include content="DockListCommon">
+					<param name="id" value="30040"/>
+					<param name="grid_id" value="30050"/>
+				</include>
+				<content>
+					<item>
+						<label>פופולריות</label>
+						<property name="path">plugin://plugin.video.pov/?mode=build_tvshow_list&amp;action=trakt_tv_trending</property>
+						<property name="view">BigLandscape</property>
+						<onclick>ActivateWindow(Videos,&quot;plugin://plugin.video.pov/?mode=build_tvshow_list&amp;action=trakt_tv_trending&quot;,return)</onclick>
+						<visible>$EXP[dockil_pov]</visible>
+					</item>
+					<item>
+						<label>פופולריות</label>
+						<property name="path">plugin://plugin.video.fen/?mode=build_tvshow_list&amp;action=tmdb_tv_popular</property>
+						<property name="view">BigLandscape</property>
+						<onclick>ActivateWindow(Videos,&quot;plugin://plugin.video.fen/?mode=build_tvshow_list&amp;action=tmdb_tv_popular&quot;,return)</onclick>
+						<visible>$EXP[dockil_fen]</visible>
+					</item>
+					<item>
+						<label>פופולריות</label>
+						<property name="path">plugin://plugin.video.umbrella/?action=tvshows&amp;url=traktpopular</property>
+						<property name="view">BigLandscape</property>
+						<onclick>ActivateWindow(Videos,&quot;plugin://plugin.video.umbrella/?action=tvshows&amp;url=traktpopular&quot;,return)</onclick>
+						<visible>$EXP[dockil_umb]</visible>
+					</item>
+					<item>
+						<label>חדשות</label>
+						<property name="path">plugin://plugin.video.pov/?mode=build_tvshow_list&amp;action=tmdb_tv_premieres</property>
+						<property name="view">BigLandscape</property>
+						<onclick>ActivateWindow(Videos,&quot;plugin://plugin.video.pov/?mode=build_tvshow_list&amp;action=tmdb_tv_premieres&quot;,return)</onclick>
+						<visible>$EXP[dockil_pov]</visible>
+					</item>
+					<item>
+						<label>חדשות</label>
+						<property name="path">plugin://plugin.video.fen/?mode=build_tvshow_list&amp;action=tmdb_tv_premieres</property>
+						<property name="view">BigLandscape</property>
+						<onclick>ActivateWindow(Videos,&quot;plugin://plugin.video.fen/?mode=build_tvshow_list&amp;action=tmdb_tv_premieres&quot;,return)</onclick>
+						<visible>$EXP[dockil_fen]</visible>
+					</item>
+					<item>
+						<label>חדשות</label>
+						<property name="path">plugin://plugin.video.umbrella/?action=tvshows&amp;url=tmdb_newshows</property>
+						<property name="view">BigLandscape</property>
+						<onclick>ActivateWindow(Videos,&quot;plugin://plugin.video.umbrella/?action=tvshows&amp;url=tmdb_newshows&quot;,return)</onclick>
+						<visible>$EXP[dockil_umb]</visible>
+					</item>
+					<item>
+						<label>הפרק הבא</label>
+						<property name="path">plugin://plugin.video.pov/?mode=build_next_episode</property>
+						<property name="view">BigLandscape</property>
+						<onclick>ActivateWindow(Videos,&quot;plugin://plugin.video.pov/?mode=build_next_episode&quot;,return)</onclick>
+						<visible>$EXP[dockil_pov]</visible>
+					</item>
+					<item>
+						<label>הפרק הבא</label>
+						<property name="path">plugin://plugin.video.fen/?mode=build_single_episode&amp;list_type=next</property>
+						<property name="view">BigLandscape</property>
+						<onclick>ActivateWindow(Videos,&quot;plugin://plugin.video.fen/?mode=build_single_episode&amp;list_type=next&quot;,return)</onclick>
+						<visible>$EXP[dockil_fen]</visible>
+					</item>
+					<item>
+						<label>הפרק הבא</label>
+						<property name="path">plugin://plugin.video.umbrella/?action=calendar&amp;url=progress</property>
+						<property name="view">BigLandscape</property>
+						<onclick>ActivateWindow(Videos,&quot;plugin://plugin.video.umbrella/?action=calendar&amp;url=progress&quot;,return)</onclick>
+						<visible>$EXP[dockil_umb]</visible>
+					</item>
+					<item>
+						<label>הסדרות שלי</label>
+						<property name="path">plugin://plugin.video.pov/?mode=build_tvshow_list&amp;action=trakt_favorites</property>
+						<property name="view">BigLandscape</property>
+						<onclick>ActivateWindow(Videos,&quot;plugin://plugin.video.pov/?mode=build_tvshow_list&amp;action=trakt_favorites&quot;,return)</onclick>
+						<visible>$EXP[dockil_pov]</visible>
+					</item>
+					<item>
+						<label>הסדרות שלי</label>
+						<property name="path">plugin://plugin.video.umbrella/?action=tvshows&amp;url=traktwatchlist</property>
+						<property name="view">BigLandscape</property>
+						<onclick>ActivateWindow(Videos,&quot;plugin://plugin.video.umbrella/?action=tvshows&amp;url=traktwatchlist&quot;,return)</onclick>
+						<visible>$EXP[dockil_umb]</visible>
+					</item>
+					<item>
+						<label>רשתות</label>
+						<property name="path">plugin://plugin.video.pov/?mode=navigator.networks&amp;menu_type=tvshow</property>
+						<property name="view">Icons</property>
+						<onclick>ActivateWindow(Videos,&quot;plugin://plugin.video.pov/?mode=navigator.networks&amp;menu_type=tvshow&quot;,return)</onclick>
+						<visible>$EXP[dockil_pov]</visible>
+					</item>
+					<item>
+						<label>רשתות</label>
+						<property name="path">plugin://plugin.video.umbrella/?action=tvNetworks</property>
+						<property name="view">Icons</property>
+						<onclick>ActivateWindow(Videos,&quot;plugin://plugin.video.umbrella/?action=tvNetworks&quot;,return)</onclick>
+						<visible>$EXP[dockil_umb]</visible>
+					</item>
+					<item>
+						<label>ז'אנרים</label>
+						<property name="path">plugin://plugin.video.pov/?mode=navigator.genres&amp;menu_type=tvshow</property>
+						<property name="view">Icons</property>
+						<onclick>ActivateWindow(Videos,&quot;plugin://plugin.video.pov/?mode=navigator.genres&amp;menu_type=tvshow&quot;,return)</onclick>
+						<visible>$EXP[dockil_pov]</visible>
+					</item>
+					<item>
+						<label>ז'אנרים</label>
+						<property name="path">plugin://plugin.video.fen/?mode=navigator.genres&amp;menu_type=tvshow</property>
+						<property name="view">Icons</property>
+						<onclick>ActivateWindow(Videos,&quot;plugin://plugin.video.fen/?mode=navigator.genres&amp;menu_type=tvshow&quot;,return)</onclick>
+						<visible>$EXP[dockil_fen]</visible>
+					</item>
+					<item>
+						<label>ז'אנרים</label>
+						<property name="path">plugin://plugin.video.umbrella/?action=tvGenres&amp;url=trakt_tvshow_genre</property>
+						<property name="view">Icons</property>
+						<onclick>ActivateWindow(Videos,&quot;plugin://plugin.video.umbrella/?action=tvGenres&amp;url=trakt_tvshow_genre&quot;,return)</onclick>
+						<visible>$EXP[dockil_umb]</visible>
+					</item>
+				</content>
+			</control>
+			<include content="DockGrid">
+				<param name="id" value="30050"/>
+				<param name="dock_id" value="30040"/>
+			</include>
+		</control>
+		<control type="group" id="30100">
+			<visible>String.IsEqual(Container(9000).ListItem.Property(id),dock_movies)</visible>
+			<include content="Visible_Right_Delayed"><param name="id" value="dock_movies"/></include>
+			<defaultcontrol always="true">30140</defaultcontrol>
+			<control type="list" id="30140">
+				<include content="DockListCommon">
+					<param name="id" value="30140"/>
+					<param name="grid_id" value="30150"/>
+				</include>
+				<content>
+					<item>
+						<label>פופולריים</label>
+						<property name="path">plugin://plugin.video.pov/?mode=build_movie_list&amp;action=trakt_movies_trending</property>
+						<property name="view">BigLandscape</property>
+						<onclick>ActivateWindow(Videos,&quot;plugin://plugin.video.pov/?mode=build_movie_list&amp;action=trakt_movies_trending&quot;,return)</onclick>
+						<visible>$EXP[dockil_pov]</visible>
+					</item>
+					<item>
+						<label>פופולריים</label>
+						<property name="path">plugin://plugin.video.fen/?mode=build_movie_list&amp;action=tmdb_movies_popular</property>
+						<property name="view">BigLandscape</property>
+						<onclick>ActivateWindow(Videos,&quot;plugin://plugin.video.fen/?mode=build_movie_list&amp;action=tmdb_movies_popular&quot;,return)</onclick>
+						<visible>$EXP[dockil_fen]</visible>
+					</item>
+					<item>
+						<label>פופולריים</label>
+						<property name="path">plugin://plugin.video.umbrella/?action=movies&amp;url=traktpopular</property>
+						<property name="view">BigLandscape</property>
+						<onclick>ActivateWindow(Videos,&quot;plugin://plugin.video.umbrella/?action=movies&amp;url=traktpopular&quot;,return)</onclick>
+						<visible>$EXP[dockil_umb]</visible>
+					</item>
+					<item>
+						<label>חדשים</label>
+						<property name="path">plugin://plugin.video.pov/?mode=build_movie_list&amp;action=tmdb_movies_latest_releases</property>
+						<property name="view">BigLandscape</property>
+						<onclick>ActivateWindow(Videos,&quot;plugin://plugin.video.pov/?mode=build_movie_list&amp;action=tmdb_movies_latest_releases&quot;,return)</onclick>
+						<visible>$EXP[dockil_pov]</visible>
+					</item>
+					<item>
+						<label>חדשים</label>
+						<property name="path">plugin://plugin.video.fen/?mode=build_movie_list&amp;action=tmdb_movies_premieres</property>
+						<property name="view">BigLandscape</property>
+						<onclick>ActivateWindow(Videos,&quot;plugin://plugin.video.fen/?mode=build_movie_list&amp;action=tmdb_movies_premieres&quot;,return)</onclick>
+						<visible>$EXP[dockil_fen]</visible>
+					</item>
+					<item>
+						<label>חדשים</label>
+						<property name="path">plugin://plugin.video.umbrella/?action=tmdbmovies&amp;url=tmdb_discovery_released</property>
+						<property name="view">BigLandscape</property>
+						<onclick>ActivateWindow(Videos,&quot;plugin://plugin.video.umbrella/?action=tmdbmovies&amp;url=tmdb_discovery_released&quot;,return)</onclick>
+						<visible>$EXP[dockil_umb]</visible>
+					</item>
+					<item>
+						<label>המשך צפייה</label>
+						<property name="path">plugin://plugin.video.pov/?mode=build_movie_list&amp;action=in_progress_movies</property>
+						<property name="view">BigLandscape</property>
+						<onclick>ActivateWindow(Videos,&quot;plugin://plugin.video.pov/?mode=build_movie_list&amp;action=in_progress_movies&quot;,return)</onclick>
+						<visible>$EXP[dockil_pov]</visible>
+					</item>
+					<item>
+						<label>המשך צפייה</label>
+						<property name="path">plugin://plugin.video.fen/?mode=build_movie_list&amp;action=in_progress_movies</property>
+						<property name="view">BigLandscape</property>
+						<onclick>ActivateWindow(Videos,&quot;plugin://plugin.video.fen/?mode=build_movie_list&amp;action=in_progress_movies&quot;,return)</onclick>
+						<visible>$EXP[dockil_fen]</visible>
+					</item>
+					<item>
+						<label>המשך צפייה</label>
+						<property name="path">plugin://plugin.video.umbrella/?action=moviesUnfinished&amp;url=traktunfinished</property>
+						<property name="view">BigLandscape</property>
+						<onclick>ActivateWindow(Videos,&quot;plugin://plugin.video.umbrella/?action=moviesUnfinished&amp;url=traktunfinished&quot;,return)</onclick>
+						<visible>$EXP[dockil_umb]</visible>
+					</item>
+					<item>
+						<label>הסרטים שלי</label>
+						<property name="path">plugin://plugin.video.pov/?mode=build_movie_list&amp;action=trakt_favorites</property>
+						<property name="view">BigLandscape</property>
+						<onclick>ActivateWindow(Videos,&quot;plugin://plugin.video.pov/?mode=build_movie_list&amp;action=trakt_favorites&quot;,return)</onclick>
+						<visible>$EXP[dockil_pov]</visible>
+					</item>
+					<item>
+						<label>הסרטים שלי</label>
+						<property name="path">plugin://plugin.video.umbrella/?action=movies&amp;url=traktwatchlist</property>
+						<property name="view">BigLandscape</property>
+						<onclick>ActivateWindow(Videos,&quot;plugin://plugin.video.umbrella/?action=movies&amp;url=traktwatchlist&quot;,return)</onclick>
+						<visible>$EXP[dockil_umb]</visible>
+					</item>
+					<item>
+						<label>ז'אנרים</label>
+						<property name="path">plugin://plugin.video.pov/?mode=navigator.genres&amp;menu_type=movie</property>
+						<property name="view">Icons</property>
+						<onclick>ActivateWindow(Videos,&quot;plugin://plugin.video.pov/?mode=navigator.genres&amp;menu_type=movie&quot;,return)</onclick>
+						<visible>$EXP[dockil_pov]</visible>
+					</item>
+					<item>
+						<label>ז'אנרים</label>
+						<property name="path">plugin://plugin.video.fen/?mode=navigator.genres&amp;menu_type=movie</property>
+						<property name="view">Icons</property>
+						<onclick>ActivateWindow(Videos,&quot;plugin://plugin.video.fen/?mode=navigator.genres&amp;menu_type=movie&quot;,return)</onclick>
+						<visible>$EXP[dockil_fen]</visible>
+					</item>
+					<item>
+						<label>ז'אנרים</label>
+						<property name="path">plugin://plugin.video.umbrella/?action=movieGenres&amp;url=trakt_movie_genre</property>
+						<property name="view">Icons</property>
+						<onclick>ActivateWindow(Videos,&quot;plugin://plugin.video.umbrella/?action=movieGenres&amp;url=trakt_movie_genre&quot;,return)</onclick>
+						<visible>$EXP[dockil_umb]</visible>
+					</item>
+				</content>
+			</control>
+			<include content="DockGrid">
+				<param name="id" value="30150"/>
+				<param name="dock_id" value="30140"/>
+			</include>
+		</control>
+		<control type="group" id="30200">
+			<visible>String.IsEqual(Container(9000).ListItem.Property(id),dock_idanplus)</visible>
+			<include content="Visible_Right_Delayed"><param name="id" value="dock_idanplus"/></include>
+			<defaultcontrol always="true">30240</defaultcontrol>
+			<control type="list" id="30240">
+				<include content="DockListCommon">
+					<param name="id" value="30240"/>
+					<param name="grid_id" value="30250"/>
+				</include>
+				<content>
+					<item>
+						<label>ערוצים חיים</label>
+						<property name="path">plugin://plugin.video.netotv/?row=live</property>
+						<property name="view">BigLandscape</property>
+						<onclick>ActivateWindow(Videos,&quot;plugin://plugin.video.netotv/?row=live&quot;,return)</onclick>
+						<visible>System.HasAddon(plugin.video.idanplus) + $EXP[dockil_neto]</visible>
+					</item>
+					<item>
+						<label>ערוצים חיים</label>
+						<property name="path">plugin://plugin.video.dockil.idanrows/?row=live</property>
+						<property name="view">BigLandscape</property>
+						<onclick>ActivateWindow(Videos,&quot;plugin://plugin.video.dockil.idanrows/?row=live&quot;,return)</onclick>
+						<visible>System.HasAddon(plugin.video.idanplus) + !$EXP[dockil_neto]</visible>
+					</item>
+					<item>
+						<label>המשך צפייה</label>
+						<property name="path">plugin://plugin.video.idanplus/?name=%5BB%5D%D7%94%D7%9E%D7%A9%D7%9A+%D7%A6%D7%A4%D7%99%D7%99%D7%94%5B%2FB%5D&amp;url=&amp;mode=27&amp;iconimage=special%3A%2F%2Fhome%2Faddons%2Fplugin.video.idanplus%2Ficon.png&amp;module=&amp;moredata=</property>
+						<property name="view">BigLandscape</property>
+						<onclick>ActivateWindow(Videos,&quot;plugin://plugin.video.idanplus/?name=%5BB%5D%D7%94%D7%9E%D7%A9%D7%9A+%D7%A6%D7%A4%D7%99%D7%99%D7%94%5B%2FB%5D&amp;url=&amp;mode=27&amp;iconimage=special%3A%2F%2Fhome%2Faddons%2Fplugin.video.idanplus%2Ficon.png&amp;module=&amp;moredata=&quot;,return)</onclick>
+						<visible>System.HasAddon(plugin.video.idanplus)</visible>
+					</item>
+					<item>
+						<label>מועדפים</label>
+						<property name="path">plugin://plugin.video.idanplus/?name=%5BB%5D%D7%9E%D7%95%D7%A2%D7%93%D7%A4%D7%99+%D7%A2%D7%99%D7%93%D7%9F+%D7%A4%D7%9C%D7%95%D7%A1%5B%2FB%5D&amp;url=&amp;mode=10&amp;iconimage=special%3A%2F%2Fhome%2Faddons%2Fplugin.video.idanplus%2Ficon.png&amp;module=&amp;moredata=</property>
+						<property name="view">BigLandscape</property>
+						<onclick>ActivateWindow(Videos,&quot;plugin://plugin.video.idanplus/?name=%5BB%5D%D7%9E%D7%95%D7%A2%D7%93%D7%A4%D7%99+%D7%A2%D7%99%D7%93%D7%9F+%D7%A4%D7%9C%D7%95%D7%A1%5B%2FB%5D&amp;url=&amp;mode=10&amp;iconimage=special%3A%2F%2Fhome%2Faddons%2Fplugin.video.idanplus%2Ficon.png&amp;module=&amp;moredata=&quot;,return)</onclick>
+						<visible>System.HasAddon(plugin.video.idanplus)</visible>
+					</item>
+					<item>
+						<label>VOD</label>
+						<property name="path">plugin://plugin.video.idanplus/?name=%5BB%5DVOD%5B%2FB%5D&amp;url=&amp;mode=2&amp;iconimage=special%3A%2F%2Fhome%2Faddons%2Fplugin.video.idanplus%2Ficon.png&amp;module=&amp;moredata=</property>
+						<property name="view">BigLandscape</property>
+						<onclick>ActivateWindow(Videos,&quot;plugin://plugin.video.idanplus/?name=%5BB%5DVOD%5B%2FB%5D&amp;url=&amp;mode=2&amp;iconimage=special%3A%2F%2Fhome%2Faddons%2Fplugin.video.idanplus%2Ficon.png&amp;module=&amp;moredata=&quot;,return)</onclick>
+						<visible>System.HasAddon(plugin.video.idanplus)</visible>
+					</item>
+					<item>
+						<label>ערוצי גיבוי</label>
+						<property name="path">plugin://plugin.video.netotv/?row=backup</property>
+						<property name="view">BigLandscape</property>
+						<onclick>ActivateWindow(Videos,&quot;plugin://plugin.video.netotv/?row=backup&quot;,return)</onclick>
+						<visible>System.HasAddon(plugin.video.idanplus) + $EXP[dockil_neto]</visible>
+					</item>
+					<item>
+						<label>ערוצי גיבוי</label>
+						<property name="path">plugin://plugin.video.dockil.idanrows/?row=backup</property>
+						<property name="view">BigLandscape</property>
+						<onclick>ActivateWindow(Videos,&quot;plugin://plugin.video.dockil.idanrows/?row=backup&quot;,return)</onclick>
+						<visible>System.HasAddon(plugin.video.idanplus) + !$EXP[dockil_neto]</visible>
+					</item>
+				</content>
+			</control>
+			<include content="DockGrid">
+				<param name="id" value="30250"/>
+				<param name="dock_id" value="30240"/>
+			</include>
+		</control>
+		<control type="group" id="30300">
+			<visible>String.IsEqual(Container(9000).ListItem.Property(id),dock_byw)</visible>
+			<include content="Visible_Right_Delayed"><param name="id" value="dock_byw"/></include>
+			<defaultcontrol always="true">30301</defaultcontrol>
+			<control type="grouplist" id="30301">
+				<include>WidgetGroupListCommon</include>
+				<onleft>9000</onleft>
+				<onback>9000</onback>
+				<include content="WidgetListCategoryStacked">
+					<param name="content_path" value="plugin://plugin.video.dockil.idanrows/?row=byw&amp;menu_type=tvshow"/>
+					<param name="widget_header" value="סדרות"/>
+					<param name="widget_target" value="videos"/>
+					<param name="list_id" value="30313"/>
+					<param name="visible" value="$EXP[dockil_pov]"/>
+				</include>
+				<include content="WidgetListLandscapeStacked">
+					<param name="content_path" value="$INFO[Window(Home).Property(fentastic.30313.path)]"/>
+					<param name="widget_header" value="$INFO[Window(Home).Property(fentastic.30313.label)]"/>
+					<param name="widget_target" value="videos"/>
+					<param name="list_id" value="303131"/>
+				</include>
+				<include content="WidgetListCategoryStacked">
+					<param name="content_path" value="plugin://plugin.video.dockil.idanrows/?row=byw&amp;menu_type=movie"/>
+					<param name="widget_header" value="סרטים"/>
+					<param name="widget_target" value="videos"/>
+					<param name="list_id" value="30323"/>
+					<param name="visible" value="$EXP[dockil_pov]"/>
+				</include>
+				<include content="WidgetListLandscapeStacked">
+					<param name="content_path" value="$INFO[Window(Home).Property(fentastic.30323.path)]"/>
+					<param name="widget_header" value="$INFO[Window(Home).Property(fentastic.30323.label)]"/>
+					<param name="widget_target" value="videos"/>
+					<param name="list_id" value="303231"/>
+				</include>
+			</control>
+		</control>
+		<control type="group" id="30400">
+			<visible>String.IsEqual(Container(9000).ListItem.Property(id),dock_home)</visible>
+			<include content="Visible_Right_Delayed"><param name="id" value="dock_home"/></include>
+			<defaultcontrol always="true">30450</defaultcontrol>
+			<control type="panel" id="30450">
+				<include>DockButtonsIcons</include>
+				<content>
+					<item>
+						<label>POV</label>
+						<icon>special://home/media/povil_icons/Logo_POV_IL.png</icon>
+						<onclick>RunAddon("plugin.video.pov")</onclick>
+						<visible>System.HasAddon(plugin.video.pov)</visible>
+					</item>
+					<item>
+						<label>חיבור שירותים להרחבת POV</label>
+						<icon>special://home/media/povil_icons/Connect_Services.png</icon>
+						<onclick>RunPlugin("plugin://plugin.video.pov/?mode=myservices")</onclick>
+						<visible>System.HasAddon(plugin.video.pov)</visible>
+					</item>
+					<item>
+						<label>הגדרת התראות מנוי</label>
+						<icon>special://home/media/povil_icons/Connect_Services.png</icon>
+						<onclick>RunScript(service.subtitles.kodipovilai,action=debrid_notice_settings)</onclick>
+						<visible>System.HasAddon(service.subtitles.kodipovilai)</visible>
+					</item>
+					<item>
+						<label>סטטוס מנוי Real Debrid</label>
+						<icon>special://home/media/povil_icons/RD_Account_Status.png</icon>
+						<onclick>PlayMedia("plugin://plugin.video.pov/?mode=real_debrid.show_account_info&amp;name=Account+Info&amp;isFolder=false")</onclick>
+						<visible>System.HasAddon(plugin.video.pov)</visible>
+					</item>
+					<item>
+						<label>סטטוס מנוי TorBox</label>
+						<icon>special://home/addons/plugin.video.pov/resources/skins/Default/media/torbox.png</icon>
+						<onclick>RunPlugin(plugin://plugin.video.pov/?mode=torbox.show_account_info)</onclick>
+						<visible>System.HasAddon(plugin.video.pov)</visible>
+					</item>
+					<item>
+						<label>סטטוס מנוי Premiumize</label>
+						<icon>special://home/addons/plugin.video.pov/resources/skins/Default/media/premiumize.png</icon>
+						<onclick>PlayMedia("plugin://plugin.video.pov/?mode=premiumize.show_account_info&amp;name=Account+Info&amp;isFolder=false")</onclick>
+						<visible>System.HasAddon(plugin.video.pov)</visible>
+					</item>
+					<item>
+						<label>בדיקת מהירות</label>
+						<icon>special://home/media/povil_icons/speed_test_icon.png</icon>
+						<onclick>PlayMedia("plugin://plugin.program.kodipovilwizard/?mode=build_speed_test")</onclick>
+						<visible>System.HasAddon(plugin.program.kodipovilwizard)</visible>
+					</item>
+					<item>
+						<label>שליחת לוג</label>
+						<icon>special://home/media/povil_icons/twilight_send_log.png</icon>
+						<onclick>ActivateWindow(10025,"plugin://plugin.video.pov/?mode=navigator.log_utils&amp;name=Changelog%20%26%20Log%20Utils",return)</onclick>
+						<visible>System.HasAddon(plugin.video.pov)</visible>
+					</item>
+					<item>
+						<label>אשף ההתקנה</label>
+						<icon>special://home/media/povil_icons/wizard_pov_il.png</icon>
+						<onclick>RunAddon("plugin.program.kodipovilwizard")</onclick>
+						<visible>System.HasAddon(plugin.program.kodipovilwizard)</visible>
+					</item>
+					<item>
+						<label>עדכון מהיר</label>
+						<icon>special://home/media/povil_icons/fast_update_pov_il.png</icon>
+						<onclick>PlayMedia("plugin://plugin.program.kodipovilwizard/?mode=install&amp;action=quick_update&amp;name=Kodi+POV+IL+-+FENtastic&amp;auto_quick_update=false")</onclick>
+						<visible>System.HasAddon(plugin.program.kodipovilwizard)</visible>
+					</item>
+					<item>
+						<label>10 העדכונים האחרונים</label>
+						<icon>special://home/media/build_icons/Wizard/wizard_pov_il.png</icon>
+						<onclick>RunPlugin("plugin://plugin.program.kodipovilwizard/?mode=recentupdates")</onclick>
+						<visible>System.HasAddon(plugin.program.kodipovilwizard)</visible>
+					</item>
+					<item>
+						<label>מי צופה?</label>
+						<icon>special://home/addons/plugin.program.kodipovilwizard/resources/skins/Default/media/DefaultUser.png</icon>
+						<onclick>RunPlugin(plugin://plugin.program.kodipovilwizard/?mode=profiles)</onclick>
+						<visible>System.HasAddon(plugin.program.kodipovilwizard)</visible>
+					</item>
+					<item>
+						<label>סידור מועדפים</label>
+						<icon>special://home/media/povil_icons/Order_Favorites.png</icon>
+						<onclick>RunAddon(plugin.program.orderfavourites-hebrew)</onclick>
+						<visible>System.HasAddon(plugin.program.orderfavourites-hebrew)</visible>
+					</item>
+					<item>
+						<label>הערב שלי</label>
+						<icon>special://home/addons/service.subtitles.kodipovilai/resources/media/tonight.png</icon>
+						<onclick>RunScript(service.subtitles.kodipovilai,action=tonight)</onclick>
+						<visible>System.HasAddon(service.subtitles.kodipovilai)</visible>
+					</item>
+				</content>
+			</control>
+		</control>
+	</include>
+</includes>

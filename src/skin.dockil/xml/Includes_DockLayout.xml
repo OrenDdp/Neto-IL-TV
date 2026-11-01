@@ -1,0 +1,771 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Look of the sections written into Includes_Dock.xml by tools/make_docks.py -->
+<includes>
+	<!-- Dock: Left/Right picks a tab, Down (or OK) goes into its grid -->
+	<include name="DockListCommon">
+		<left>75</left>
+		<top>90</top>
+		<width>1350</width>
+		<height>80</height>
+		<orientation>horizontal</orientation>
+		<scrolltime tween="cubic" easing="out">300</scrolltime>
+		<onleft condition="!$EXP[dockil_neto]">9000</onleft>
+		<onleft condition="$EXP[dockil_neto]">700</onleft>
+		<ondown condition="Control.IsVisible($PARAM[grid_id]1)">$PARAM[grid_id]1</ondown>
+		<ondown condition="Control.IsVisible($PARAM[grid_id]2)">$PARAM[grid_id]2</ondown>
+		<ondown condition="Control.IsVisible($PARAM[grid_id]3)">$PARAM[grid_id]3</ondown>
+		<ondown condition="Control.IsVisible($PARAM[grid_id]4)">$PARAM[grid_id]4</ondown>
+		<ondown condition="Control.IsVisible($PARAM[grid_id]5)">$PARAM[grid_id]5</ondown>
+		<ondown condition="Control.IsVisible($PARAM[grid_id]6)">$PARAM[grid_id]6</ondown>
+		<ondown condition="Control.IsVisible($PARAM[grid_id]7)">$PARAM[grid_id]7</ondown>
+		<ondown condition="Control.IsVisible($PARAM[grid_id]8)">$PARAM[grid_id]8</ondown>
+		<onback condition="!$EXP[dockil_neto]">9000</onback>
+		<onback condition="$EXP[dockil_neto]">Minimize</onback>
+		<itemlayout width="230" height="80">
+			<control type="label">
+				<width>215</width>
+				<height>80</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>font32</font>
+				<textcolor>unfocused_text</textcolor>
+				<label>$INFO[ListItem.Label]</label>
+			</control>
+		</itemlayout>
+		<focusedlayout width="230" height="80">
+			<control type="image">
+				<width>215</width>
+				<height>80</height>
+				<texture border="24" colordiffuse="FFFFFFFF">dockil/tile_frame.png</texture>
+				<visible>Control.HasFocus($PARAM[id])</visible>
+			</control>
+			<control type="label">
+				<width>215</width>
+				<height>80</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>font32</font>
+				<textcolor>white</textcolor>
+				<label>[B]$INFO[ListItem.Label][/B]</label>
+			</control>
+		</focusedlayout>
+	</include>
+	<!-- Grid of the tab chosen in the Dock, first tile on the left: one panel per display type (Set widgets), and only
+	     the one of the chosen tab's type is shown. A panel only ever holds tabs of its own type, so while a new tab loads
+	     the old tab's tiles never show in the new tab's layout. Panel ids: the grid id followed by 1..8 (see DockListCommon's Down). -->
+	<include name="DockGrid">
+		<include content="BusyListSpinner">
+			<param name="list_id" value="$PARAM[id]1"/>
+			<param name="posy" value="300"/>
+			<param name="visible" value="Control.IsVisible($PARAM[id]1)"/>
+		</include>
+		<!-- Icons -->
+		<control type="panel" id="$PARAM[id]1">
+			<visible>String.IsEqual(Container($PARAM[dock_id]).ListItem.Property(view),Icons)</visible>
+			<include content="DockPanelCommon">
+				<param name="id" value="$PARAM[id]1"/>
+				<param name="dock_id" value="$PARAM[dock_id]"/>
+			</include>
+			<itemlayout width="205" height="200">
+				<include content="DockSquareTile">
+					<param name="focused" value="false"/>
+					<param name="text_color" value="unfocused_text"/>
+					<param name="label" value="$INFO[ListItem.Label]"/>
+				</include>
+			</itemlayout>
+			<focusedlayout width="205" height="200">
+				<include content="DockSquareTile">
+					<param name="focused" value="true"/>
+					<param name="text_color" value="white"/>
+					<param name="label" value="[B]$INFO[ListItem.Label][/B]"/>
+				</include>
+			</focusedlayout>
+		</control>
+		<include content="BusyListSpinner">
+			<param name="list_id" value="$PARAM[id]2"/>
+			<param name="posy" value="300"/>
+			<param name="visible" value="Control.IsVisible($PARAM[id]2)"/>
+		</include>
+		<!-- Category -->
+		<control type="panel" id="$PARAM[id]2">
+			<visible>String.IsEqual(Container($PARAM[dock_id]).ListItem.Property(view),Category)</visible>
+			<include content="DockPanelCommon">
+				<param name="id" value="$PARAM[id]2"/>
+				<param name="dock_id" value="$PARAM[dock_id]"/>
+			</include>
+			<itemlayout width="448" height="290">
+				<include content="DockIconTile">
+					<param name="bg" value="dockil/tile_bg.png"/>
+					<param name="bg_color" value="button_focus2"/>
+					<param name="frame" value="false"/>
+					<param name="text_color" value="unfocused_text"/>
+					<param name="label" value="$INFO[ListItem.Label]"/>
+				</include>
+			</itemlayout>
+			<focusedlayout width="448" height="290">
+				<include content="DockIconTile">
+					<param name="bg" value="dockil/tile_bg.png"/>
+					<param name="bg_color" value="button_focus2"/>
+					<param name="frame" value="true"/>
+					<param name="text_color" value="white"/>
+					<param name="label" value="[B]$INFO[ListItem.Label][/B]"/>
+				</include>
+			</focusedlayout>
+		</control>
+		<include content="BusyListSpinner">
+			<param name="list_id" value="$PARAM[id]3"/>
+			<param name="posy" value="300"/>
+			<param name="visible" value="Control.IsVisible($PARAM[id]3)"/>
+		</include>
+		<!-- BigPoster -->
+		<control type="panel" id="$PARAM[id]3">
+			<visible>String.IsEqual(Container($PARAM[dock_id]).ListItem.Property(view),BigPoster)</visible>
+			<include content="DockPanelCommon">
+				<param name="id" value="$PARAM[id]3"/>
+				<param name="dock_id" value="$PARAM[dock_id]"/>
+			</include>
+			<itemlayout width="276" height="430">
+				<control type="group">
+					<left>68</left>
+					<top>15</top>
+					<include content="BigInfoWallMovieLayout">
+						<param name="focused" value="false" />
+					</include>
+				</control>
+			</itemlayout>
+			<focusedlayout width="276" height="430">
+				<control type="group">
+					<depth>DepthContentPopout</depth>
+					<left>68</left>
+					<top>15</top>
+					<include content="BigInfoWallMovieLayout">
+						<param name="focused" value="true" />
+					</include>
+				</control>
+			</focusedlayout>
+		</control>
+		<include content="BusyListSpinner">
+			<param name="list_id" value="$PARAM[id]4"/>
+			<param name="posy" value="300"/>
+			<param name="visible" value="Control.IsVisible($PARAM[id]4)"/>
+		</include>
+		<!-- Poster -->
+		<control type="panel" id="$PARAM[id]4">
+			<visible>String.IsEqual(Container($PARAM[dock_id]).ListItem.Property(view),Poster)</visible>
+			<include content="DockPanelCommon">
+				<param name="id" value="$PARAM[id]4"/>
+				<param name="dock_id" value="$PARAM[dock_id]"/>
+			</include>
+			<itemlayout width="200" height="330">
+				<control type="group">
+					<animation effect="zoom" end="75" center="auto" time="0">Conditional</animation>
+					<left>-25</left>
+					<top>-37</top>
+					<include content="BigInfoWallMovieLayout">
+						<param name="focused" value="false" />
+					</include>
+				</control>
+			</itemlayout>
+			<focusedlayout width="200" height="330">
+				<control type="group">
+					<depth>DepthContentPopout</depth>
+					<animation effect="zoom" end="75" center="auto" time="0">Conditional</animation>
+					<left>-25</left>
+					<top>-37</top>
+					<include content="BigInfoWallMovieLayout">
+						<param name="focused" value="true" />
+					</include>
+				</control>
+			</focusedlayout>
+		</control>
+		<include content="BusyListSpinner">
+			<param name="list_id" value="$PARAM[id]5"/>
+			<param name="posy" value="300"/>
+			<param name="visible" value="Control.IsVisible($PARAM[id]5)"/>
+		</include>
+		<!-- Landscape -->
+		<control type="panel" id="$PARAM[id]5">
+			<visible>String.IsEqual(Container($PARAM[dock_id]).ListItem.Property(view),Landscape)</visible>
+			<include content="DockPanelCommon">
+				<param name="id" value="$PARAM[id]5"/>
+				<param name="dock_id" value="$PARAM[dock_id]"/>
+			</include>
+			<itemlayout width="330" height="220">
+				<control type="group">
+					<animation effect="zoom" end="75" center="auto" time="0">Conditional</animation>
+					<left>-27</left>
+					<top>-12</top>
+					<include content="BigWideInfoWallMovieLayout">
+						<param name="focused" value="false" />
+						<param name="list_id" value="$PARAM[id]5" />
+					</include>
+				</control>
+			</itemlayout>
+			<focusedlayout width="330" height="220">
+				<control type="group">
+					<depth>DepthContentPopout</depth>
+					<animation effect="zoom" end="75" center="auto" time="0">Conditional</animation>
+					<left>-27</left>
+					<top>-12</top>
+					<include content="BigWideInfoWallMovieLayout">
+						<param name="focused" value="true" />
+						<param name="list_id" value="$PARAM[id]5" />
+					</include>
+				</control>
+			</focusedlayout>
+		</control>
+		<include content="BusyListSpinner">
+			<param name="list_id" value="$PARAM[id]6"/>
+			<param name="posy" value="300"/>
+			<param name="visible" value="Control.IsVisible($PARAM[id]6)"/>
+		</include>
+		<!-- BigLandscapeInfo -->
+		<control type="panel" id="$PARAM[id]6">
+			<visible>String.IsEqual(Container($PARAM[dock_id]).ListItem.Property(view),BigLandscapeInfo)</visible>
+			<include content="DockPanelCommon">
+				<param name="id" value="$PARAM[id]6"/>
+				<param name="dock_id" value="$PARAM[dock_id]"/>
+			</include>
+			<itemlayout width="448" height="370">
+				<control type="group">
+					<left>68</left>
+					<top>15</top>
+					<include content="BigWideInfoWallMovieLayout">
+						<param name="focused" value="false" />
+						<param name="list_id" value="$PARAM[id]6" />
+					</include>
+				</control>
+				<include content="DockInfoLines">
+					<param name="top" value="239"/>
+					<param name="width" value="380"/>
+					<param name="left" value="68"/>
+					<param name="text_color" value="unfocused_text"/>
+				</include>
+			</itemlayout>
+			<focusedlayout width="448" height="370">
+				<control type="group">
+					<depth>DepthContentPopout</depth>
+					<left>68</left>
+					<top>15</top>
+					<include content="BigWideInfoWallMovieLayout">
+						<param name="focused" value="true" />
+						<param name="list_id" value="$PARAM[id]6" />
+					</include>
+				</control>
+				<include content="DockInfoLines">
+					<param name="top" value="239"/>
+					<param name="width" value="380"/>
+					<param name="left" value="68"/>
+					<param name="text_color" value="white"/>
+				</include>
+			</focusedlayout>
+		</control>
+		<include content="BusyListSpinner">
+			<param name="list_id" value="$PARAM[id]7"/>
+			<param name="posy" value="300"/>
+			<param name="visible" value="Control.IsVisible($PARAM[id]7)"/>
+		</include>
+		<!-- LandscapeInfo -->
+		<control type="panel" id="$PARAM[id]7">
+			<visible>String.IsEqual(Container($PARAM[dock_id]).ListItem.Property(view),LandscapeInfo)</visible>
+			<include content="DockPanelCommon">
+				<param name="id" value="$PARAM[id]7"/>
+				<param name="dock_id" value="$PARAM[dock_id]"/>
+			</include>
+			<itemlayout width="330" height="310">
+				<control type="group">
+					<animation effect="zoom" end="75" center="auto" time="0">Conditional</animation>
+					<left>-27</left>
+					<top>-12</top>
+					<include content="BigWideInfoWallMovieLayout">
+						<param name="focused" value="false" />
+						<param name="list_id" value="$PARAM[id]7" />
+					</include>
+				</control>
+				<include content="DockInfoLines">
+					<param name="top" value="200"/>
+					<param name="width" value="285"/>
+					<param name="left" value="20"/>
+					<param name="text_color" value="unfocused_text"/>
+				</include>
+			</itemlayout>
+			<focusedlayout width="330" height="310">
+				<control type="group">
+					<depth>DepthContentPopout</depth>
+					<animation effect="zoom" end="75" center="auto" time="0">Conditional</animation>
+					<left>-27</left>
+					<top>-12</top>
+					<include content="BigWideInfoWallMovieLayout">
+						<param name="focused" value="true" />
+						<param name="list_id" value="$PARAM[id]7" />
+					</include>
+				</control>
+				<include content="DockInfoLines">
+					<param name="top" value="200"/>
+					<param name="width" value="285"/>
+					<param name="left" value="20"/>
+					<param name="text_color" value="white"/>
+				</include>
+			</focusedlayout>
+		</control>
+		<include content="BusyListSpinner">
+			<param name="list_id" value="$PARAM[id]8"/>
+			<param name="posy" value="300"/>
+			<param name="visible" value="Control.IsVisible($PARAM[id]8)"/>
+		</include>
+		<!-- BigLandscape -->
+		<control type="panel" id="$PARAM[id]8">
+			<visible>![String.IsEqual(Container($PARAM[dock_id]).ListItem.Property(view),Icons) | String.IsEqual(Container($PARAM[dock_id]).ListItem.Property(view),Category) | String.IsEqual(Container($PARAM[dock_id]).ListItem.Property(view),BigPoster) | String.IsEqual(Container($PARAM[dock_id]).ListItem.Property(view),Poster) | String.IsEqual(Container($PARAM[dock_id]).ListItem.Property(view),Landscape) | String.IsEqual(Container($PARAM[dock_id]).ListItem.Property(view),BigLandscapeInfo) | String.IsEqual(Container($PARAM[dock_id]).ListItem.Property(view),LandscapeInfo)]</visible>
+			<include content="DockPanelCommon">
+				<param name="id" value="$PARAM[id]8"/>
+				<param name="dock_id" value="$PARAM[dock_id]"/>
+			</include>
+			<itemlayout width="448" height="290">
+				<control type="group">
+					<left>68</left>
+					<top>15</top>
+					<include content="BigWideInfoWallMovieLayout">
+						<param name="focused" value="false" />
+						<param name="list_id" value="$PARAM[id]8" />
+					</include>
+				</control>
+			</itemlayout>
+			<focusedlayout width="448" height="290">
+				<control type="group">
+					<depth>DepthContentPopout</depth>
+					<left>68</left>
+					<top>15</top>
+					<include content="BigWideInfoWallMovieLayout">
+						<param name="focused" value="true" />
+						<param name="list_id" value="$PARAM[id]8" />
+					</include>
+				</control>
+			</focusedlayout>
+		</control>
+	</include>
+	<include name="DockPanelCommon">
+		<!-- Neto-IL-TV has no side menu, so its grid takes the whole width -->
+		<include content="DockPanelBox" condition="!System.HasAddon(service.netotv)">
+			<param name="left" value="0"/>
+			<param name="top" value="200"/>
+			<param name="width" value="1440"/>
+			<param name="height" value="860"/>
+		</include>
+		<include content="DockPanelBox" condition="System.HasAddon(service.netotv)">
+			<param name="left" value="-417"/>
+			<param name="top" value="230"/>
+			<param name="width" value="1850"/>
+			<param name="height" value="830"/>
+		</include>
+		<orientation>vertical</orientation>
+		<scrolltime tween="cubic" easing="out">500</scrolltime>
+		<onup>$PARAM[dock_id]</onup>
+		<onleft condition="!$EXP[dockil_neto]">9000</onleft>
+		<onleft condition="$EXP[dockil_neto]">noop</onleft>
+		<onback>SetFocus($PARAM[id],0,absolute)</onback>
+		<onback>$PARAM[dock_id]</onback>
+		<!-- see-through while the Dock moves and the new tab loads (not hidden: Kodi does not load a hidden list) -->
+		<animation effect="fade" start="100" end="0" time="0" reversible="false" condition="Container($PARAM[id]).IsUpdating | Container($PARAM[dock_id]).Scrolling">Conditional</animation>
+		<content target="videos">$INFO[Container($PARAM[dock_id]).ListItem.Property(path)]</content>
+	</include>
+	<include name="DockPanelBox">
+		<left>$PARAM[left]</left>
+		<top>$PARAM[top]</top>
+		<width>$PARAM[width]</width>
+		<height>$PARAM[height]</height>
+	</include>
+	<!-- Name and details under the picture, for the *Info display types -->
+	<include name="DockInfoLines">
+		<control type="label">
+			<left>$PARAM[left]</left>
+			<top>$PARAM[top]</top>
+			<width>$PARAM[width]</width>
+			<height>40</height>
+			<align>center</align>
+			<font>font27</font>
+			<textcolor>$PARAM[text_color]</textcolor>
+			<label>$INFO[ListItem.TVShowTitle,[B],[/B] - ]$INFO[ListItem.Label]</label>
+			<visible>String.IsEqual(ListItem.DBType,episode)</visible>
+		</control>
+		<control type="label">
+			<left>$PARAM[left]</left>
+			<top>$PARAM[top]</top>
+			<width>$PARAM[width]</width>
+			<height>40</height>
+			<align>center</align>
+			<font>font27</font>
+			<textcolor>$PARAM[text_color]</textcolor>
+			<label>[B]$INFO[ListItem.Label][/B]</label>
+			<visible>!String.IsEqual(ListItem.DBType,episode)</visible>
+		</control>
+		<control type="label">
+			<left>$PARAM[left]</left>
+			<top>$PARAM[top]</top>
+			<width>$PARAM[width]</width>
+			<height>40</height>
+			<align>center</align>
+			<font>font12</font>
+			<textcolor>grey</textcolor>
+			<animation effect="slide" end="0,40" time="0" condition="true">Conditional</animation>
+			<label>$INFO[ListItem.Season,S]$INFO[ListItem.Episode,E,  ]$VAR[DockInfoDate]</label>
+		</control>
+	</include>
+	<variable name="DockInfoDate">
+		<value condition="!String.IsEmpty(ListItem.Premiered)">$INFO[ListItem.Premiered]</value>
+		<value>$INFO[ListItem.Year]</value>
+	</variable>
+	<!-- A tile with an icon and a name, for lists without artwork (genres, networks) and for buttons -->
+	<include name="DockIconTile">
+		<control type="image">
+			<left>63</left>
+			<top>10</top>
+			<width>390</width>
+			<height>224</height>
+			<texture border="24" colordiffuse="FFFFFFFF">dockil/tile_frame.png</texture>
+			<visible>$PARAM[frame]</visible>
+		</control>
+		<control type="image">
+			<left>68</left>
+			<top>15</top>
+			<width>380</width>
+			<height>214</height>
+			<texture border="20" colordiffuse="$PARAM[bg_color]">$PARAM[bg]</texture>
+		</control>
+		<control type="image">
+			<left>198</left>
+			<top>35</top>
+			<width>120</width>
+			<height>120</height>
+			<aspectratio>keep</aspectratio>
+			<texture fallback="DefaultFolder.png">$INFO[ListItem.Icon]</texture>
+		</control>
+		<control type="label">
+			<left>78</left>
+			<top>160</top>
+			<width>360</width>
+			<height>60</height>
+			<align>center</align>
+			<aligny>center</aligny>
+			<font>font27</font>
+			<textcolor>$PARAM[text_color]</textcolor>
+			<label>$PARAM[label]</label>
+		</control>
+	</include>
+	<!-- Icons: small square tiles with the icon and its name inside, 7 in a row (buttons, genres, networks) -->
+	<include name="DockSquareTile">
+		<control type="group">
+			<animation effect="zoom" start="100" end="108" center="auto" time="150" condition="$PARAM[focused]">Conditional</animation>
+			<control type="image">
+				<left>7</left>
+				<top>5</top>
+				<width>186</width>
+				<height>186</height>
+				<texture border="24" colordiffuse="FFFFFFFF">dockil/tile_frame.png</texture>
+				<visible>$PARAM[focused]</visible>
+			</control>
+			<control type="image">
+				<left>12</left>
+				<top>10</top>
+				<width>176</width>
+				<height>176</height>
+				<texture border="20" colordiffuse="button_focus2">dockil/tile_bg.png</texture>
+			</control>
+			<control type="image">
+				<left>52</left>
+				<top>22</top>
+				<width>96</width>
+				<height>96</height>
+				<aspectratio>keep</aspectratio>
+				<texture fallback="DefaultFolder.png">$INFO[ListItem.Icon]</texture>
+			</control>
+			<control type="textbox">
+				<left>18</left>
+				<top>120</top>
+				<width>164</width>
+				<height>62</height>
+				<align>center</align>
+				<aligny>top</aligny>
+				<font>font12</font>
+				<textcolor>$PARAM[text_color]</textcolor>
+				<label>$PARAM[label]</label>
+			</control>
+		</control>
+	</include>
+	<include name="DockButtonsIcons">
+		<left>0</left>
+		<top>90</top>
+		<width>1440</width>
+		<height>970</height>
+		<orientation>vertical</orientation>
+		<scrolltime tween="cubic" easing="out">500</scrolltime>
+		<onleft>9000</onleft>
+		<onback>9000</onback>
+		<itemlayout width="205" height="200">
+			<include content="DockSquareTile">
+				<param name="focused" value="false"/>
+				<param name="text_color" value="unfocused_text"/>
+				<param name="label" value="$INFO[ListItem.Label]"/>
+			</include>
+		</itemlayout>
+		<focusedlayout width="205" height="200">
+			<include content="DockSquareTile">
+				<param name="focused" value="true"/>
+				<param name="text_color" value="white"/>
+				<param name="label" value="[B]$INFO[ListItem.Label][/B]"/>
+			</include>
+		</focusedlayout>
+	</include>
+	<!-- Buttons sections (home): one look for all the buttons, chosen in Skin settings > Display type -->
+	<include name="DockButtonsPoster">
+		<left>0</left>
+		<top>90</top>
+		<width>1440</width>
+		<height>970</height>
+		<orientation>vertical</orientation>
+		<scrolltime tween="cubic" easing="out">500</scrolltime>
+		<onleft>9000</onleft>
+		<onback>9000</onback>
+		<itemlayout width="276" height="350">
+			<control type="image">
+				<left>20</left>
+				<top>15</top>
+				<width>236</width>
+				<height>320</height>
+				<texture border="20" colordiffuse="button_focus2">dockil/tile_bg.png</texture>
+			</control>
+			<control type="image">
+				<left>49</left>
+				<top>55</top>
+				<width>177</width>
+				<height>240</height>
+				<aspectratio>keep</aspectratio>
+				<texture fallback="DefaultFolder.png">$INFO[ListItem.Icon]</texture>
+			</control>
+		</itemlayout>
+		<focusedlayout width="276" height="350">
+			<!-- focused: a white frame around the dark tile, as on the picture tiles -->
+			<control type="image">
+				<left>15</left>
+				<top>10</top>
+				<width>246</width>
+				<height>330</height>
+				<texture border="24" colordiffuse="FFFFFFFF">dockil/tile_frame.png</texture>
+			</control>
+			<control type="image">
+				<left>20</left>
+				<top>15</top>
+				<width>236</width>
+				<height>320</height>
+				<texture border="20" colordiffuse="button_focus2">dockil/tile_bg.png</texture>
+			</control>
+			<control type="image">
+				<left>49</left>
+				<top>55</top>
+				<width>177</width>
+				<height>240</height>
+				<aspectratio>keep</aspectratio>
+				<texture fallback="DefaultFolder.png">$INFO[ListItem.Icon]</texture>
+			</control>
+		</focusedlayout>
+	</include>
+	<include name="DockButtonsPosterInfo">
+		<left>0</left>
+		<top>90</top>
+		<width>1440</width>
+		<height>970</height>
+		<orientation>vertical</orientation>
+		<scrolltime tween="cubic" easing="out">500</scrolltime>
+		<onleft>9000</onleft>
+		<onback>9000</onback>
+		<itemlayout width="276" height="410">
+			<control type="image">
+				<left>20</left>
+				<top>15</top>
+				<width>236</width>
+				<height>320</height>
+				<texture border="20" colordiffuse="button_focus2">dockil/tile_bg.png</texture>
+			</control>
+			<control type="image">
+				<left>49</left>
+				<top>55</top>
+				<width>177</width>
+				<height>240</height>
+				<aspectratio>keep</aspectratio>
+				<texture fallback="DefaultFolder.png">$INFO[ListItem.Icon]</texture>
+			</control>
+			<control type="label">
+				<left>20</left>
+				<top>340</top>
+				<width>236</width>
+				<height>50</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>font27</font>
+				<textcolor>unfocused_text</textcolor>
+				<label>$INFO[ListItem.Label]</label>
+			</control>
+		</itemlayout>
+		<focusedlayout width="276" height="410">
+			<!-- focused: a white frame around the dark tile, as on the picture tiles -->
+			<control type="image">
+				<left>15</left>
+				<top>10</top>
+				<width>246</width>
+				<height>330</height>
+				<texture border="24" colordiffuse="FFFFFFFF">dockil/tile_frame.png</texture>
+			</control>
+			<control type="image">
+				<left>20</left>
+				<top>15</top>
+				<width>236</width>
+				<height>320</height>
+				<texture border="20" colordiffuse="button_focus2">dockil/tile_bg.png</texture>
+			</control>
+			<control type="image">
+				<left>49</left>
+				<top>55</top>
+				<width>177</width>
+				<height>240</height>
+				<aspectratio>keep</aspectratio>
+				<texture fallback="DefaultFolder.png">$INFO[ListItem.Icon]</texture>
+			</control>
+			<control type="label">
+				<left>20</left>
+				<top>340</top>
+				<width>236</width>
+				<height>50</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>font27</font>
+				<textcolor>white</textcolor>
+				<label>[B]$INFO[ListItem.Label][/B]</label>
+			</control>
+		</focusedlayout>
+	</include>
+	<include name="DockButtonsLandscape">
+		<left>0</left>
+		<top>90</top>
+		<width>1440</width>
+		<height>970</height>
+		<orientation>vertical</orientation>
+		<scrolltime tween="cubic" easing="out">500</scrolltime>
+		<onleft>9000</onleft>
+		<onback>9000</onback>
+		<itemlayout width="448" height="260">
+			<control type="image">
+				<left>20</left>
+				<top>15</top>
+				<width>408</width>
+				<height>230</height>
+				<texture border="20" colordiffuse="button_focus2">dockil/tile_bg.png</texture>
+			</control>
+			<control type="image">
+				<left>71</left>
+				<top>43</top>
+				<width>306</width>
+				<height>172</height>
+				<aspectratio>keep</aspectratio>
+				<texture fallback="DefaultFolder.png">$INFO[ListItem.Icon]</texture>
+			</control>
+		</itemlayout>
+		<focusedlayout width="448" height="260">
+			<!-- focused: a white frame around the dark tile, as on the picture tiles -->
+			<control type="image">
+				<left>15</left>
+				<top>10</top>
+				<width>418</width>
+				<height>240</height>
+				<texture border="24" colordiffuse="FFFFFFFF">dockil/tile_frame.png</texture>
+			</control>
+			<control type="image">
+				<left>20</left>
+				<top>15</top>
+				<width>408</width>
+				<height>230</height>
+				<texture border="20" colordiffuse="button_focus2">dockil/tile_bg.png</texture>
+			</control>
+			<control type="image">
+				<left>71</left>
+				<top>43</top>
+				<width>306</width>
+				<height>172</height>
+				<aspectratio>keep</aspectratio>
+				<texture fallback="DefaultFolder.png">$INFO[ListItem.Icon]</texture>
+			</control>
+		</focusedlayout>
+	</include>
+	<include name="DockButtonsLandscapeInfo">
+		<left>0</left>
+		<top>90</top>
+		<width>1440</width>
+		<height>970</height>
+		<orientation>vertical</orientation>
+		<scrolltime tween="cubic" easing="out">500</scrolltime>
+		<onleft>9000</onleft>
+		<onback>9000</onback>
+		<itemlayout width="448" height="320">
+			<control type="image">
+				<left>20</left>
+				<top>15</top>
+				<width>408</width>
+				<height>230</height>
+				<texture border="20" colordiffuse="button_focus2">dockil/tile_bg.png</texture>
+			</control>
+			<control type="image">
+				<left>71</left>
+				<top>43</top>
+				<width>306</width>
+				<height>172</height>
+				<aspectratio>keep</aspectratio>
+				<texture fallback="DefaultFolder.png">$INFO[ListItem.Icon]</texture>
+			</control>
+			<control type="label">
+				<left>20</left>
+				<top>250</top>
+				<width>408</width>
+				<height>50</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>font27</font>
+				<textcolor>unfocused_text</textcolor>
+				<label>$INFO[ListItem.Label]</label>
+			</control>
+		</itemlayout>
+		<focusedlayout width="448" height="320">
+			<!-- focused: a white frame around the dark tile, as on the picture tiles -->
+			<control type="image">
+				<left>15</left>
+				<top>10</top>
+				<width>418</width>
+				<height>240</height>
+				<texture border="24" colordiffuse="FFFFFFFF">dockil/tile_frame.png</texture>
+			</control>
+			<control type="image">
+				<left>20</left>
+				<top>15</top>
+				<width>408</width>
+				<height>230</height>
+				<texture border="20" colordiffuse="button_focus2">dockil/tile_bg.png</texture>
+			</control>
+			<control type="image">
+				<left>71</left>
+				<top>43</top>
+				<width>306</width>
+				<height>172</height>
+				<aspectratio>keep</aspectratio>
+				<texture fallback="DefaultFolder.png">$INFO[ListItem.Icon]</texture>
+			</control>
+			<control type="label">
+				<left>20</left>
+				<top>250</top>
+				<width>408</width>
+				<height>50</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>font27</font>
+				<textcolor>white</textcolor>
+				<label>[B]$INFO[ListItem.Label][/B]</label>
+			</control>
+		</focusedlayout>
+	</include>
+</includes>

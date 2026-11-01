@@ -9,7 +9,7 @@ Kodi source: https://github.com/xbmc/xbmc (tag 21.3-Omega for Android, 21.0-Omeg
   `org.xbmc.kodi` string in `lib/armeabi-v7a/libkodi.so` replaced by `org.xbmc.neto` (same length, nothing else changed).
 - `RECORD_AUDIO` permission removed (no voice search).
 - Default settings changed: Hebrew, Israel, Hebrew keyboard, no screensaver, add-on updates from any repository,
-  Hebrew subtitle encoding, no ".." row, FENtastic skin. See `settings.xml.diff`.
+  Hebrew subtitle encoding, no ".." row, DockIL skin. See `settings.xml.diff`.
 - System add-ons removed: audio encoders, mouse and SNES controllers, joystick support, version check, dim
   screensaver. Added: Hebrew language, FENtastic and its helper, the request modules, and our two add-ons (`src/`).
   See `addon-manifest.xml.diff`.
